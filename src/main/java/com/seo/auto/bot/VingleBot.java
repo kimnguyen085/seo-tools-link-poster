@@ -44,7 +44,7 @@ public class VingleBot extends BaseBot {
             driver.findElements(By.className("vingleToolTip__rootWrapper__2Qz")).get(1).findElement(By.className("leftToolBar__boxItemWrapper__2re")).click();
             Thread.sleep(500l);
             driver.findElements(By.xpath("//input[contains(@placeholder,'Insert a link')]")).get(1).sendKeys(link);
-            Thread.sleep(500l);
+            Thread.sleep(1500l);
             driver.findElements(By.xpath("//button[text() = 'Done']")).get(1).click();
             Thread.sleep(4000l);
 

@@ -61,7 +61,7 @@ public abstract class BaseBot implements BotInterface {
         this.driver = driver;
     }
 
-    public boolean openPhantomJs() {
+    public boolean openPhantomJs(boolean openBrowser) {
         try {
             if (driver != null) {
                 driver = null;
@@ -69,7 +69,7 @@ public abstract class BaseBot implements BotInterface {
 
             if (Constants.PHANTOM_JS_PATH.contains("chrome")) {
                 ChromeOptions options = new ChromeOptions();
-//                options.addArguments("--headless");
+                if (!openBrowser)    options.addArguments("--headless");
                 System.setProperty("webdriver.chrome.driver",
                         System.getProperty("user.dir") + "/" + Constants.PHANTOM_JS_PATH);
                 Map<String, Object> prefs = new HashMap<>();
