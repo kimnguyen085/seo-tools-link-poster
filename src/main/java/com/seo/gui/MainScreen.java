@@ -12,7 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 public class MainScreen {
     private JTextField urlTxt;
@@ -33,33 +39,115 @@ public class MainScreen {
     private static final Logger LOGGER = Logger.getLogger(MainScreen.class);
 
     private static BaseBot bot;
+    private static List<BaseBot> botList = Arrays.asList(
+            new ElloCoBot(), new WordpressBot(), new VingleBot(), new TumblrBot(), new BczBot(),
+            new FlipboardBot(),
+            new GetPocketBot(), new InstapaperBot(), new ScoopItBot()
+    );
+
+    private void showPostLinkFailedMessage(BaseBot targetBot) {
+        JLabel field = findCorrelatedFieldForBot(targetBot);
+        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+
+        field.setText("Post link failed");
+        field.setForeground(Color.RED);
+    }
+
+    private void showLoginFailedMessage(BaseBot targetBot) {
+        JLabel field = findCorrelatedFieldForBot(targetBot);
+        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+
+        field.setText("Login failed");
+        field.setForeground(Color.RED);
+    }
+
+    private void showSuccessMessage(BaseBot targetBot) {
+        JLabel field = findCorrelatedFieldForBot(targetBot);
+        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+
+        field.setText("Success");
+        field.setForeground(Color.GREEN);
+    }
+
+    private JLabel findCorrelatedFieldForBot(BaseBot targetBot) {
+        if (targetBot instanceof ElloCoBot) {
+            return loadingElloCoLbl;
+        }
+        if (targetBot instanceof BczBot) {
+            return loadingBczLbl;
+        }
+        if (targetBot instanceof VingleBot) {
+            return loadingVingleLbl;
+        }
+        if (targetBot instanceof InstapaperBot) {
+            return loadingInstaLbl;
+        }
+        if (targetBot instanceof TumblrBot) {
+            return loadingTumblrLbl;
+        }
+        if (targetBot instanceof WordpressBot) {
+            return loadingWPLbl;
+        }
+        if (targetBot instanceof FlipboardBot) {
+            return loadingFlipboardLbl;
+        }
+        if (targetBot instanceof GetPocketBot) {
+            return loadingGetPocketLbl;
+        }
+        if (targetBot instanceof ScoopItBot) {
+            return loadingScoopItLbl;
+        }
+        return null;
+    }
 
     public MainScreen() {
+        ExecutorService service = Executors.newFixedThreadPool(Constants.NUMBER_OF_CONCURRENT_TASKS);
         submitBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try {
+//                try {
+                    botList.stream().forEach(bot -> {
+                        service.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("bot number " + bot.toString());
+                                bot.openPhantomJs();
+                                if (!bot.login()) {
+                                    showLoginFailedMessage(bot);
+                                }
+//                                if (!bot.postLink(urlTxt.getText())) {
+//                                    showPostLinkFailedMessage(bot);
+//                                }
+                                showSuccessMessage(bot);
+                                bot.closePhantomJsBr();
+                            }
+                        });
+                    });
+                    service.shutdown();
+//                    try {
+//                        service.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+//                    } catch (InterruptedException exx) {
+//                        exx.printStackTrace();
+//                    }
 
-                    bot = new InstapaperBot();
-                    bot.openPhantomJs();
-                    bot.login();
-                    bot.postLink(urlTxt.getText());
-                    bot.closePhantomJsBr();
 
-                    Thread.sleep(2000l);
-
-                    // log to area
-                    Path filePath = Path.of("./LOG/log_seo-tools.log");
-                    String fileContent = "";
-                    byte[] bytes = Files.readAllBytes(filePath);
-                    fileContent = new String(bytes);
-
-                    txtLogArea.append(fileContent);
-                } catch (Exception ex) {
-                    LOGGER.error(ex.getMessage());
-                    ex.printStackTrace();
-                }
-
+//                } catch (Exception ex) {
+//                    LOGGER.error(ex.getMessage());
+//                    ex.printStackTrace();
+//                } finally {
+//                    // log to area
+//                    Path filePath = Path.of("./LOG/log_seo-tools.log");
+//                    String fileContent = "";
+//                    byte[] bytes = new byte[0];
+//                    try {
+//                        bytes = Files.readAllBytes(filePath);
+//                    } catch (IOException ex) {
+//                        ex.printStackTrace();
+//                    }
+//                    fileContent = new String(bytes);
+//
+//                    txtLogArea.append(fileContent);
+//                }
             }
         });
     }
@@ -106,7 +194,8 @@ public class MainScreen {
     private void $$$setupUI$$$() {
         MainScreen = new JPanel();
         MainScreen.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(10, 10, 10, 10), -1, -1));
-        MainScreen.setMinimumSize(new Dimension(658, 450));
+        MainScreen.setMaximumSize(new Dimension(658, 500));
+        MainScreen.setMinimumSize(new Dimension(658, 500));
         MainScreen.setPreferredSize(new Dimension(658, 450));
         final JLabel label1 = new JLabel();
         label1.setText("URL to post");
@@ -117,18 +206,18 @@ public class MainScreen {
         submitBtn.setText("Start");
         MainScreen.add(submitBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        MainScreen.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        MainScreen.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(600, 250), new Dimension(600, 250), new Dimension(600, 250), 0, false));
         txtLogArea = new JTextArea();
         txtLogArea.setEditable(false);
+        txtLogArea.setMaximumSize(new Dimension(650, 300));
         txtLogArea.setWrapStyleWord(true);
         scrollPane1.setViewportView(txtLogArea);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(5, 4, new Insets(0, 0, 0, 0), -1, -1));
         MainScreen.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         loadingTumblrLbl = new JLabel();
-        loadingTumblrLbl.setIcon(new ImageIcon(getClass().getResource("/main/resources/assets/icon/loading.gif")));
         loadingTumblrLbl.setText("");
-        panel1.add(loadingTumblrLbl, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(10, 10), new Dimension(10, 10), new Dimension(10, 10), 0, false));
+        panel1.add(loadingTumblrLbl, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         tumblrLbl = new JLabel();
         tumblrLbl.setText("Tumblr");
         panel1.add(tumblrLbl, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -166,7 +255,7 @@ public class MainScreen {
         label8.setText("ScoopIt");
         panel1.add(label8, new com.intellij.uiDesigner.core.GridConstraints(3, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label9 = new JLabel();
-        label9.setText("Tumblr");
+        label9.setText("INCOMING");
         panel1.add(label9, new com.intellij.uiDesigner.core.GridConstraints(4, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loadingElloCoLbl = new JLabel();
         loadingElloCoLbl.setText("");

@@ -25,8 +25,9 @@ public class BczBot extends BaseBot {
             driver.findElement(By.id("user_pass")).sendKeys(pwd);
             driver.findElement(By.id("wp-submit")).click();
             Thread.sleep(4000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
         }
         return true;
     }

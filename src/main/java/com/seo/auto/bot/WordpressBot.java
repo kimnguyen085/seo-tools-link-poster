@@ -28,8 +28,9 @@ public class WordpressBot extends BaseBot {
             driver.findElement(By.name("password")).sendKeys(pwd);
             driver.findElement(By.xpath("//button[@type = 'submit']")).click();
             Thread.sleep(3000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
         }
         return true;
     }

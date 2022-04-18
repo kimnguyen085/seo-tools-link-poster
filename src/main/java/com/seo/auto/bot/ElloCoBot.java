@@ -30,8 +30,9 @@ public class ElloCoBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.xpath("//button[contains(@class,'FormButton')]")).click();
             Thread.sleep(2000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
         }
         return true;
     }

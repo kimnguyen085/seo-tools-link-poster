@@ -23,8 +23,9 @@ public class VingleBot extends BaseBot {
             Thread.sleep(3000l);
             driver.findElement(By.xpath("//button[contains(text(),'Log In')]")).click();
             Thread.sleep(4000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
         }
         return true;
     }
