@@ -11,8 +11,10 @@ import java.time.format.DateTimeFormatter;
 // basically wp bot
 public class BczBot extends BaseBot {
 
-    private static String usrName = "kimnguyenvn085@gmail.com";
-    private static String pwd = "%_xV&B6NV6z-d3n";
+//    public static String usrName = "kimnguyenvn085@gmail.com";
+//    public static String pwd = "%_xV&B6NV6z-d3n";
+    public static String usrName = "";
+    public static String pwd = "";
     private static final Logger LOGGER = Logger.getLogger(BczBot.class);
 
     @Override

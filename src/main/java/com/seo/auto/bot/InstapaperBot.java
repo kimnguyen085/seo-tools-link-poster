@@ -11,8 +11,10 @@ import java.time.format.DateTimeFormatter;
 // Magazines service ??? Make sure there is default magazines
 public class InstapaperBot extends BaseBot {
 
-    private static String usrName = "kimnguyenvn085@gmail.com";
-    private static String pwd = "1234qwer!@#e4df";
+//    public static String usrName = "kimnguyenvn085@gmail.com";
+//    public static String pwd = "1234qwer!@#e4df";
+    public static String usrName = "";
+    public static String pwd = "";
     private static final Logger LOGGER = Logger.getLogger(InstapaperBot.class);
 
     @Override

@@ -11,9 +11,11 @@ import java.time.format.DateTimeFormatter;
 
 public class WordpressBot extends BaseBot {
 
-    private static String usrName = "kimnguyenvn085";
-    private static String pwd = "qwer56783#2S";
-    // qwer56783#2S
+//    public static String usrName = "kimnguyenvn085";
+//    public static String pwd = "qwer56783#2S";
+    public static String usrName = "";
+    public static String pwd = "";
+
     private static final Logger LOGGER = Logger.getLogger(WordpressBot.class);
 
     @Override

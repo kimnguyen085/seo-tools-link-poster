@@ -8,7 +8,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import javax.crypto.Cipher;
+import javax.crypto.*;
+import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
@@ -24,14 +25,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.ZoneId;
 import java.util.*;
 
 public class UtilsMeth {
 
     private static final Logger LOGGER = Logger.getLogger(UtilsMeth.class);
+    private static SecretKeyFactory keyFactory = null; // Get the secret key factor for generating DESede keys;
+    private static String cryptographyKey = "wYu@U%b5R*n$L&xth!S243`RN;HT;bu";
+    private static final IvParameterSpec params = new IvParameterSpec(new byte[] {7, 14, 21, 28, 9, 18, 27, 36} ); // Create an initialization vector (necessary for CBC mode);
+
+    static {
+        try {
+            keyFactory = SecretKeyFactory.getInstance("DESede");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String getRandomHexString(int numchars) {
         Random r = new Random();
@@ -168,12 +183,29 @@ public class UtilsMeth {
             throw new RuntimeException(e);
         }
     }
+    private static byte[] convertData(Integer mode, final byte[] input) throws InvalidKeyException, InvalidKeySpecException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
+        final DESedeKeySpec spec = new DESedeKeySpec(cryptographyKey.getBytes()); // Create a DESede key spec from the key
+        final SecretKey key = keyFactory.generateSecret(spec); // Generate a DESede SecretKey object
+        final Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding"); // Create a DESede Cipher
+        cipher.init(mode, key, params);  //Initialize the cipher and put it in decrypt mode
+        final byte[] convertedData = cipher.doFinal(input); // Decrypt the data
+        return convertedData;
+    }
+
     public static String encrypt(String txt) {
         try {
 //            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 //            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(com.seo.auto.utils.Constants.KEY.getBytes("UTF-8"), "AES"), new IvParameterSpec(atmp.main.java.utils.Constants.INIT_VECTOR.getBytes("UTF-8")));
 //            return Base64.encodeBase64String(cipher.doFinal(txt.getBytes()));
-            return "";
+            final byte[] input = txt.getBytes();
+
+            try {
+                final byte[] convertedData = convertData(Cipher.ENCRYPT_MODE, input);
+                return Base64.getEncoder().encodeToString(convertedData);
+            } catch (final Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+                throw new RuntimeException();
+            }
         } catch (Exception e) {
             LOGGER.error("ERROR - encrypt. TXT: " + txt, e);
         }
@@ -186,7 +218,17 @@ public class UtilsMeth {
 //            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 //            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(atmp.main.java.utils.Constants.KEY.getBytes("UTF-8"), "AES"), new IvParameterSpec(atmp.main.java.utils.Constants.INIT_VECTOR.getBytes("UTF-8")));
 //            return new String(cipher.doFinal(Base64.decodeBase64(encrypted)));
-            return "";
+            final byte[] input = Base64.getDecoder().decode(encrypted);
+            try {
+                final byte[] convertedData = convertData(Cipher.DECRYPT_MODE, input);
+                return new String(convertedData);
+            } catch (final IllegalBlockSizeException ex) {
+                LOGGER.error("Error while decrypting database value. It seems the data was not base64 encoded. You can ignore this exception");
+                throw new RuntimeException();
+            } catch (final Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+                throw new RuntimeException();
+            }
         } catch (Exception e) {
             LOGGER.error("ERROR - decrypt. TXT: " + encrypted, e);
         }
@@ -196,6 +238,7 @@ public class UtilsMeth {
 
     public static void writeFile(String path, String data) {
         try {
+            data = encrypt(data);
             Files.write(Paths.get(path), data.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -203,7 +246,8 @@ public class UtilsMeth {
     }
 
     public static String readFile(String filePath) throws IOException {
-        return FileUtils.readFileToString(new File(filePath), String.valueOf(StandardCharsets.UTF_8));
+        String data = FileUtils.readFileToString(new File(filePath), String.valueOf(StandardCharsets.UTF_8));
+        return decrypt(data);
     }
 
     public static String getLicenseUrlFromFile(String filename) {
@@ -446,4 +490,5 @@ public class UtilsMeth {
         String nbPeople=peopleRows.get(0).select(".anneeN1").get(nb).text();
         System.out.println(nbPeople);
     }
+
     }

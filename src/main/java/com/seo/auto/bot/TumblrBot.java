@@ -9,8 +9,10 @@ import java.util.Date;
 
 public class TumblrBot extends BaseBot {
 
-    private static String usrName = "kimnguyen085@gmail.com";
-    private static String pwd = "AN6W4w^mXS5ZD(d";
+//    public static String usrName = "kimnguyen085@gmail.com";
+//    public static String pwd = "AN6W4w^mXS5ZD(d";
+    public static String usrName = "";
+    public static String pwd = "";
     private static final Logger LOGGER = Logger.getLogger(TumblrBot.class);
 
     @Override

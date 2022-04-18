@@ -8,8 +8,10 @@ import java.time.format.DateTimeFormatter;
 
 public class VingleBot extends BaseBot {
 
-    private static String usrName = "kimnguyenvn085";
-    private static String pwd = "%_xV&B6NV6z-d3n";
+//    public static String usrName = "kimnguyenvn085";
+//    public static String pwd = "%_xV&B6NV6z-d3n";
+    public static String usrName = "";
+    public static String pwd = "";
     private static final Logger LOGGER = Logger.getLogger(VingleBot.class);
 
     @Override

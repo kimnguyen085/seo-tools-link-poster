@@ -14,9 +14,11 @@ import java.time.format.DateTimeFormatter;
 
 public class ElloCoBot extends BaseBot {
 
-    private static String usrName = "inoxtrihieu";
-    private static String pwd = "Phanhuuduc27031964";
-    // AN6W4w^mXS5ZD(d
+//    public static String usrName = "inoxtrihieu";
+//    public static String pwd = "Phanhuuduc27031964";
+    public static String usrName = "";
+    public static String pwd = "";
+
     private static final Logger LOGGER = Logger.getLogger(ElloCoBot.class);
 
     @Override

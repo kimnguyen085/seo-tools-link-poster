@@ -1,7 +1,9 @@
 package main.java.com.seo.gui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.com.seo.auto.bot.*;
 import main.java.com.seo.auto.utils.Constants;
+import main.java.com.seo.auto.utils.UtilsMeth;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -15,6 +17,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -36,6 +39,8 @@ public class MainScreen {
     private JLabel loadingVingleLbl;
     private JLabel loadingGetPocketLbl;
     private JLabel loadingScoopItLbl;
+    private JButton credentialsBtn;
+    private CredentialsDialog dialog;
     private static final Logger LOGGER = Logger.getLogger(MainScreen.class);
 
     private static List<BaseBot> botList = Arrays.asList(
@@ -178,6 +183,60 @@ public class MainScreen {
 //                }
             }
         });
+
+        credentialsBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dialog = new CredentialsDialog();
+                dialog.setSize(600, 600);
+                dialog.setVisible(true);
+            }
+        });
+
+        loadCredentialsFile();
+    }
+
+    private void loadCredentialsFile() {
+        try {
+            String txtCredentials = UtilsMeth.readFile(Constants.CREDENTIALS_DEFAULT_DIRECTORY_FILE);
+            if (txtCredentials.isEmpty()) return;
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> root = mapper.readValue(txtCredentials, Map.class);
+
+            Map<String, String> bczCredentials = (Map<String, String>) root.get("Bcz");
+            Map<String, String> ellocoCredentials = (Map<String, String>) root.get("ElloCo");
+            Map<String, String> flipboardCredentials = (Map<String, String>) root.get("Flipboard");
+            Map<String, String> getPocketCredentials = (Map<String, String>) root.get("GetPocket");
+            Map<String, String> instapaperCredentials = (Map<String, String>) root.get("Instapaper");
+            Map<String, String> scoopitCredentials = (Map<String, String>) root.get("ScoopIt");
+            Map<String, String> tumblrCredentials = (Map<String, String>) root.get("Tumblr");
+            Map<String, String> vingleCredentials = (Map<String, String>) root.get("Vingle");
+            Map<String, String> wpCredentials = (Map<String, String>) root.get("Wordpress");
+
+            BczBot.usrName = bczCredentials.get("usr");
+            BczBot.pwd = bczCredentials.get("pwd");
+            ElloCoBot.usrName = ellocoCredentials.get("usr");
+            ElloCoBot.pwd = ellocoCredentials.get("pwd");
+            FlipboardBot.usrName = flipboardCredentials.get("usr");
+            FlipboardBot.pwd = flipboardCredentials.get("pwd");
+            GetPocketBot.usrName = getPocketCredentials.get("usr");
+            GetPocketBot.pwd = getPocketCredentials.get("pwd");
+            InstapaperBot.usrName = instapaperCredentials.get("usr");
+            InstapaperBot.pwd = instapaperCredentials.get("pwd");
+            ScoopItBot.usrName = scoopitCredentials.get("usr");
+            ScoopItBot.pwd = scoopitCredentials.get("pwd");
+            TumblrBot.usrName = tumblrCredentials.get("usr");
+            TumblrBot.pwd = tumblrCredentials.get("pwd");
+            VingleBot.usrName = vingleCredentials.get("usr");
+            VingleBot.pwd = vingleCredentials.get("pwd");
+            WordpressBot.usrName = wpCredentials.get("usr");
+            WordpressBot.pwd = wpCredentials.get("pwd");
+
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     private void createUIComponents() {
@@ -199,6 +258,11 @@ public class MainScreen {
         if (!new File(Constants.SCREENSHOTS_DEFAULT_DIRECTORY).isDirectory()) {
             new File(Constants.SCREENSHOTS_DEFAULT_DIRECTORY).mkdirs();
             LOGGER.info("Create screenshots folder successfully");
+        }
+
+        if (!new File(Constants.CREDENTIALS_DEFAULT_DIRECTORY_FILE).isFile()) {
+            new File(Constants.CREDENTIALS_DEFAULT_DIRECTORY_FILE).createNewFile();
+            LOGGER.info("Create credentials file successfully");
         }
     }
 
@@ -301,6 +365,9 @@ public class MainScreen {
         final JLabel label10 = new JLabel();
         label10.setText("");
         panel1.add(label10, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        credentialsBtn = new JButton();
+        credentialsBtn.setText("Credentials");
+        MainScreen.add(credentialsBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
