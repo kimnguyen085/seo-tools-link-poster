@@ -9,7 +9,8 @@ public class Constants {
     public static final String API_HOST = System.getenv("SMPL_HOST");
     public static final String API_PORT = System.getenv("SMPL_PORT");
     public static final String API_PREFIX = System.getenv("SMPL_PREFIX");
-    public static final String PHANTOM_JS_PATH = System.getenv("SMPL_PHANTOM_JS_PATH"); // chromedrivers/macos/chromedriver
+    public static final String PHANTOM_JS_PATH = "chromedrivers/macos/chromedriver"; // chromedrivers/macos/chromedriver
+    public static final String PHANTOM_JS_WINDOW_PATH = "chromedrivers/window/chromedriver.exe";
     public static final String ATMP_SIRET_FILTER=System.getenv("SMPL_ATMP_SIRET_FILTER");
 
     public static final String DOWNLOAD_DEFAULT_DIRECTORY = System.getProperty("user.dir") + "/downloads";

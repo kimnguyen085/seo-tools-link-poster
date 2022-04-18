@@ -2,6 +2,7 @@ package main.java.com.seo.auto.bot;
 
 import main.java.com.seo.auto.utils.Constants;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.openqa.selenium.*;
@@ -70,8 +71,14 @@ public abstract class BaseBot implements BotInterface {
             if (Constants.PHANTOM_JS_PATH.contains("chrome")) {
                 ChromeOptions options = new ChromeOptions();
                 if (!openBrowser)    options.addArguments("--headless");
-                System.setProperty("webdriver.chrome.driver",
-                        System.getProperty("user.dir") + "/" + Constants.PHANTOM_JS_PATH);
+                if (SystemUtils.IS_OS_MAC_OSX) {
+                    System.setProperty("webdriver.chrome.driver",
+                            System.getProperty("user.dir") + "/" + Constants.PHANTOM_JS_PATH);
+                } else {
+                    System.setProperty("webdriver.chrome.driver",
+                            System.getProperty("user.dir") + "/" + Constants.PHANTOM_JS_WINDOW_PATH);
+                }
+
                 Map<String, Object> prefs = new HashMap<>();
                 prefs.put("profile.default_content_settings.popups", 0);
 

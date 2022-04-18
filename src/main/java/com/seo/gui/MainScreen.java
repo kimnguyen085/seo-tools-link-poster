@@ -117,6 +117,7 @@ public class MainScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
 //                try {
+                txtLogArea.setText(":::......::::::::: Bot is started :::......:::::::::");
                 submitBtn.setEnabled(false);
                 ExecutorService service = Executors.newFixedThreadPool(Constants.NUMBER_OF_CONCURRENT_TASKS);
                 botList.stream().forEach(bot -> {
@@ -124,20 +125,25 @@ public class MainScreen {
                         @Override
                         public void run() {
                             System.out.println("bot number " + bot.toString());
+                            addLogMessage(bot.toString() + " has started");
                             bot.openPhantomJs(openBrowser.isSelected());
                             if (!bot.login()) {
                                 System.out.println("cant login ");
+                                addLogMessage(bot.toString() + " has failed to log in");
                                 showLoginFailedMessage(bot);
                                 bot.closePhantomJsBr();
                                 return;
                             }
+                            addLogMessage(bot.toString() + " has logged in");
 
                             if (!bot.postLink(urlTxt.getText())) {
                                 System.out.println("cant post link");
+                                addLogMessage(bot.toString() + " has failed to post in");
                                 showPostLinkFailedMessage(bot);
                                 bot.closePhantomJsBr();
                                 return;
                             }
+                            addLogMessage(bot.toString() + " has posted link. Please check screenshots folder for preview");
 
                             showSuccessMessage(bot);
                             bot.closePhantomJsBr();
@@ -239,6 +245,10 @@ public class MainScreen {
             e.printStackTrace();
         }
 
+    }
+
+    private void addLogMessage(String msg) {
+        txtLogArea.append(" \n [Info] " + msg);
     }
 
     private void createUIComponents() {
@@ -372,7 +382,7 @@ public class MainScreen {
         MainScreen.add(credentialsBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         openBrowser = new JCheckBox();
         openBrowser.setText("Open Browser?");
-        MainScreen.add(openBrowser, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        MainScreen.add(openBrowser, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
