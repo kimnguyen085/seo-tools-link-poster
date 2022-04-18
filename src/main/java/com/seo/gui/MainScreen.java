@@ -38,11 +38,16 @@ public class MainScreen {
     private JLabel loadingScoopItLbl;
     private static final Logger LOGGER = Logger.getLogger(MainScreen.class);
 
-    private static BaseBot bot;
     private static List<BaseBot> botList = Arrays.asList(
-            new ElloCoBot(), new WordpressBot(), new VingleBot(), new TumblrBot(), new BczBot(),
+            new ElloCoBot(),
+            new WordpressBot(),
+            new VingleBot(),
+            new TumblrBot(),
+            new BczBot(),
             new FlipboardBot(),
-            new GetPocketBot(), new InstapaperBot(), new ScoopItBot()
+            new GetPocketBot(),
+            new InstapaperBot(),
+            new ScoopItBot()
     );
 
     private void showPostLinkFailedMessage(BaseBot targetBot) {
@@ -101,29 +106,52 @@ public class MainScreen {
     }
 
     public MainScreen() {
-        ExecutorService service = Executors.newFixedThreadPool(Constants.NUMBER_OF_CONCURRENT_TASKS);
+
         submitBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 //                try {
-                    botList.stream().forEach(bot -> {
-                        service.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("bot number " + bot.toString());
-                                bot.openPhantomJs();
-                                if (!bot.login()) {
-                                    showLoginFailedMessage(bot);
-                                }
-//                                if (!bot.postLink(urlTxt.getText())) {
-//                                    showPostLinkFailedMessage(bot);
-//                                }
-                                showSuccessMessage(bot);
+                submitBtn.setEnabled(false);
+                ExecutorService service = Executors.newFixedThreadPool(Constants.NUMBER_OF_CONCURRENT_TASKS);
+                botList.stream().forEach(bot -> {
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("bot number " + bot.toString());
+                            bot.openPhantomJs();
+                            if (!bot.login()) {
+                                System.out.println("cant login ");
+                                showLoginFailedMessage(bot);
                                 bot.closePhantomJsBr();
+                                return;
                             }
-                        });
+
+                            if (!bot.postLink(urlTxt.getText())) {
+                                System.out.println("cant post link");
+                                showPostLinkFailedMessage(bot);
+                                bot.closePhantomJsBr();
+                                return;
+                            }
+
+                            showSuccessMessage(bot);
+                            bot.closePhantomJsBr();
+                        }
                     });
-                    service.shutdown();
+                });
+                service.shutdown();
+
+//                    // log to area
+//                    Path filePath = Path.of("./LOG/log_seo-tools.log");
+//                    String fileContent = "";
+//                    byte[] bytes = new byte[0];
+//                    try {
+//                        bytes = Files.readAllBytes(filePath);
+//                    } catch (IOException ex) {
+//                        ex.printStackTrace();
+//                    }
+//                    fileContent = new String(bytes);
+//                    txtLogArea.append(fileContent);
+
 //                    try {
 //                        service.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
 //                    } catch (InterruptedException exx) {
@@ -172,8 +200,6 @@ public class MainScreen {
             new File(Constants.SCREENSHOTS_DEFAULT_DIRECTORY).mkdirs();
             LOGGER.info("Create screenshots folder successfully");
         }
-
-        bot = new TumblrBot();
     }
 
 

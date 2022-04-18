@@ -28,6 +28,9 @@ public class BczBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -61,8 +64,12 @@ public class BczBot extends BaseBot {
             Thread.sleep(5000l);
             driver.findElement(By.xpath("//a[text() = 'View Post']")).click();
             Thread.sleep(2000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         LOGGER.info("Posted " + link + " to Bcz user " + usrName);
         takeScreenshot("Bcz-post" + usrName + "-"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy-hh-ss")));

@@ -26,6 +26,9 @@ public class GetPocketBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -43,8 +46,11 @@ public class GetPocketBot extends BaseBot {
 
             driver.findElement(By.xpath("//button[@data-cy = 'add-submit']")).click();
             Thread.sleep(4000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         LOGGER.info("Posted " + link + " to GetPocket for user " + usrName);

@@ -3,6 +3,7 @@ package main.java.com.seo.auto.bot;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
@@ -23,8 +24,10 @@ public class FlipboardBot extends BaseBot {
             Thread.sleep(3000l);
 
             // accept cookie policy first if any
-            String pageSource = driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title = 'SP Consent Message']"))).getPageSource();
+//            String pageSource = driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title = 'SP Consent Message']"))).getPageSource();
+            String pageSource = driver.getPageSource();
             if (!Jsoup.parse(pageSource).select("button:containsOwn(Accept)").isEmpty()) {
+                String fpageSource = driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title = 'SP Consent Message']"))).getPageSource();
                 driver.findElement(By.xpath("//button[text() = 'Accept']")).click();
                 LOGGER.info("There is cookie policy, just press skip");
                 Thread.sleep(2000l);
@@ -37,6 +40,9 @@ public class FlipboardBot extends BaseBot {
             Thread.sleep(7000l);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         return true;
@@ -57,8 +63,11 @@ public class FlipboardBot extends BaseBot {
 
             driver.findElement(By.xpath("//a[contains(@class,'section-tiles__tile')]")).click();
             Thread.sleep(3000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         LOGGER.info("Posted " + link + " to Flipboard for user " + usrName);

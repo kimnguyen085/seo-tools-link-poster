@@ -64,8 +64,7 @@ public abstract class BaseBot implements BotInterface {
     public boolean openPhantomJs() {
         try {
             if (driver != null) {
-                clearBrowsingData();
-                return true;
+                driver = null;
             }
 
             if (Constants.PHANTOM_JS_PATH.contains("chrome")) {

@@ -33,6 +33,9 @@ public class ElloCoBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -72,8 +75,11 @@ public class ElloCoBot extends BaseBot {
             WebElement toDivElement = driver.findElements(By.tagName("div")).get(12);
             js.executeScript("arguments[0].scrollIntoView();", toDivElement);
             Thread.sleep(600l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         LOGGER.info("Posted " + link + " to ElloCo for user " + usrName);

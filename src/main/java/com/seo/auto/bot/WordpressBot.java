@@ -31,6 +31,9 @@ public class WordpressBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -66,8 +69,12 @@ public class WordpressBot extends BaseBot {
             loginFrame.findElement(By.xpath("//a[text() = 'View Post']")).click();
             driver.switchTo().defaultContent();
             Thread.sleep(2000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         LOGGER.info("Posted " + link + " to Wordpress user " + usrName);
         takeScreenshot("Wordpress-post" + usrName + "-"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy-hh-ss")));

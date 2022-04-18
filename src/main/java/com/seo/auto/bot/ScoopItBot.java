@@ -28,6 +28,9 @@ public class ScoopItBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -50,8 +53,11 @@ public class ScoopItBot extends BaseBot {
             clickDivElement = driver.findElement(By.xpath("//div[text() = 'Publish']"));
             js.executeScript("arguments[0].click();", clickDivElement);
             Thread.sleep(3000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         LOGGER.info("Posted " + link + " to ScoopIt for user " + usrName);

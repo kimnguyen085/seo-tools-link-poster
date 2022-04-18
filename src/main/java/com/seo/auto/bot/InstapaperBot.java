@@ -29,6 +29,9 @@ public class InstapaperBot extends BaseBot {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
+            return false;
         }
         return true;
     }
@@ -42,8 +45,11 @@ public class InstapaperBot extends BaseBot {
             driver.findElement(By.xpath("//input[contains(@name,'bookmark[url]')]/following-sibling::input")).click();
 
             Thread.sleep(3000l);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
+            return false;
+        } catch (NoClassDefFoundError err) {
+            LOGGER.error(err.getMessage());
             return false;
         }
         LOGGER.info("Posted " + link + " to Instapaper for user " + usrName);
