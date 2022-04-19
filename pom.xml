@@ -161,7 +161,15 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>chromedrivers</directory>
-                <targetPath>${project.build.directory}/chromedrivers</targetPath>
+                <targetPath>${project.build.directory}/chromedrivers/chromedrivers</targetPath>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <includes>
+                    <include>*.exe</include>
+                </includes>
+                <directory>${project.basedir}</directory>
+                <targetPath>${project.build.directory}</targetPath>
             </resource>
         </resources>
         <plugins>
@@ -178,7 +186,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/libs
+                                ${project.build.directory}/libs/libs
                             </outputDirectory>
                         </configuration>
                     </execution>
