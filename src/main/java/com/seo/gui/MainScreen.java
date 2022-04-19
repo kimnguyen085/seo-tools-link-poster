@@ -12,16 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
 
 public class MainScreen {
     private JTextField urlTxt;
@@ -41,6 +36,7 @@ public class MainScreen {
     private JLabel loadingScoopItLbl;
     private JButton credentialsBtn;
     private JCheckBox openBrowser;
+    private JLabel loadingForlkdLbl;
     private CredentialsDialog dialog;
     private static final Logger LOGGER = Logger.getLogger(MainScreen.class);
 
@@ -53,12 +49,13 @@ public class MainScreen {
             new FlipboardBot(),
             new GetPocketBot(),
             new InstapaperBot(),
-            new ScoopItBot()
+            new ScoopItBot(),
+            new FolkdBot()
     );
 
     private void showPostLinkFailedMessage(BaseBot targetBot) {
         JLabel field = findCorrelatedFieldForBot(targetBot);
-        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+        if (field == null) txtLogArea.append("\n Cannot find correlated field message");
 
         field.setText("Post link failed");
         field.setForeground(Color.RED);
@@ -66,7 +63,7 @@ public class MainScreen {
 
     private void showLoginFailedMessage(BaseBot targetBot) {
         JLabel field = findCorrelatedFieldForBot(targetBot);
-        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+        if (field == null) txtLogArea.append("\n Cannot find correlated field message");
 
         field.setText("Login failed");
         field.setForeground(Color.RED);
@@ -74,7 +71,7 @@ public class MainScreen {
 
     private void showSuccessMessage(BaseBot targetBot) {
         JLabel field = findCorrelatedFieldForBot(targetBot);
-        if (field == null) txtLogArea.append("/nCannot find correlated field message");
+        if (field == null) txtLogArea.append("\n Cannot find correlated field message");
 
         field.setText("Success");
         field.setForeground(Color.GREEN);
@@ -107,6 +104,9 @@ public class MainScreen {
         }
         if (targetBot instanceof ScoopItBot) {
             return loadingScoopItLbl;
+        }
+        if (targetBot instanceof FolkdBot) {
+            return loadingForlkdLbl;
         }
         return null;
     }
@@ -220,6 +220,7 @@ public class MainScreen {
             Map<String, String> tumblrCredentials = (Map<String, String>) root.get("Tumblr");
             Map<String, String> vingleCredentials = (Map<String, String>) root.get("Vingle");
             Map<String, String> wpCredentials = (Map<String, String>) root.get("Wordpress");
+            Map<String, String> folkdCredentials = (Map<String, String>) root.get("Folkd");
 
             BczBot.usrName = bczCredentials.get("usr");
             BczBot.pwd = bczCredentials.get("pwd");
@@ -239,6 +240,8 @@ public class MainScreen {
             VingleBot.pwd = vingleCredentials.get("pwd");
             WordpressBot.usrName = wpCredentials.get("usr");
             WordpressBot.pwd = wpCredentials.get("pwd");
+            FolkdBot.usrName = folkdCredentials == null ? "" : folkdCredentials.get("usr");
+            FolkdBot.pwd = folkdCredentials == null ? "" : folkdCredentials.get("pwd");
 
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
@@ -357,7 +360,7 @@ public class MainScreen {
         label8.setText("ScoopIt");
         panel1.add(label8, new com.intellij.uiDesigner.core.GridConstraints(3, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label9 = new JLabel();
-        label9.setText("INCOMING");
+        label9.setText("FolkD");
         panel1.add(label9, new com.intellij.uiDesigner.core.GridConstraints(4, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loadingElloCoLbl = new JLabel();
         loadingElloCoLbl.setText("");
@@ -374,9 +377,9 @@ public class MainScreen {
         loadingScoopItLbl = new JLabel();
         loadingScoopItLbl.setText("");
         panel1.add(loadingScoopItLbl, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label10 = new JLabel();
-        label10.setText("");
-        panel1.add(label10, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        loadingForlkdLbl = new JLabel();
+        loadingForlkdLbl.setText("");
+        panel1.add(loadingForlkdLbl, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         credentialsBtn = new JButton();
         credentialsBtn.setText("Credentials");
         MainScreen.add(credentialsBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

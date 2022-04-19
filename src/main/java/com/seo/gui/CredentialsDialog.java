@@ -36,6 +36,8 @@ public class CredentialsDialog extends JDialog {
     private JTextField wpUsr;
     private JPasswordField wpPwd;
     private JTextField vingleUsr;
+    private JTextField folkdUsr;
+    private JPasswordField folkdPwd;
     private static final Logger LOGGER = Logger.getLogger(CredentialsDialog.class);
 
     public CredentialsDialog() {
@@ -93,6 +95,8 @@ public class CredentialsDialog extends JDialog {
         vinglePwd.setText(VingleBot.pwd);
         wpUsr.setText(WordpressBot.usrName);
         wpPwd.setText(WordpressBot.pwd);
+        folkdUsr.setText(FolkdBot.usrName);
+        folkdPwd.setText(FolkdBot.pwd);
     }
 
     private void onOK() throws JsonProcessingException {
@@ -114,8 +118,8 @@ public class CredentialsDialog extends JDialog {
         VingleBot.pwd = new String(vinglePwd.getPassword());
         WordpressBot.usrName = wpUsr.getText();
         WordpressBot.pwd = new String(wpPwd.getPassword());
-//        BczBot.usrName = bczUsr.getText();
-//        BczBot.pwd = new String(bczPwd.getPassword());
+        FolkdBot.usrName = folkdUsr.getText();
+        FolkdBot.pwd = new String(folkdPwd.getPassword());
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> mapObj = constructJsonTreeData();
@@ -179,6 +183,12 @@ public class CredentialsDialog extends JDialog {
                 put("pwd", WordpressBot.pwd);
             }
         };
+        Map<String, String> folkdMap = new HashedMap<String, String>() {
+            {
+                put("usr", FolkdBot.usrName);
+                put("pwd", FolkdBot.pwd);
+            }
+        };
         root.put("ElloCo", ellocoMap);
         root.put("Bcz", bczMap);
         root.put("Flipboard", flipboardMap);
@@ -188,7 +198,7 @@ public class CredentialsDialog extends JDialog {
         root.put("Tumblr", tumblrMap);
         root.put("Vingle", vingleMap);
         root.put("Wordpress", wpMap);
-//        root.put("ElloCo", ellocoMap);
+        root.put("Folkd", folkdMap);
         return root;
     }
 
@@ -270,7 +280,7 @@ public class CredentialsDialog extends JDialog {
         label8.setText("Wordpress");
         panel3.add(label8, new com.intellij.uiDesigner.core.GridConstraints(8, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label9 = new JLabel();
-        label9.setText("Incoming");
+        label9.setText("FolkD");
         panel3.add(label9, new com.intellij.uiDesigner.core.GridConstraints(9, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         elloCoUsr = new JTextField();
         panel3.add(elloCoUsr, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
@@ -288,8 +298,8 @@ public class CredentialsDialog extends JDialog {
         panel3.add(vingleUsr, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         wpUsr = new JTextField();
         panel3.add(wpUsr, new com.intellij.uiDesigner.core.GridConstraints(8, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        final JTextField textField1 = new JTextField();
-        panel3.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(9, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        folkdUsr = new JTextField();
+        panel3.add(folkdUsr, new com.intellij.uiDesigner.core.GridConstraints(9, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         elloCoPwd = new JPasswordField();
         panel3.add(elloCoPwd, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         flipboardPwd = new JPasswordField();
@@ -306,8 +316,8 @@ public class CredentialsDialog extends JDialog {
         panel3.add(vinglePwd, new com.intellij.uiDesigner.core.GridConstraints(7, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         wpPwd = new JPasswordField();
         panel3.add(wpPwd, new com.intellij.uiDesigner.core.GridConstraints(8, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        final JPasswordField passwordField1 = new JPasswordField();
-        panel3.add(passwordField1, new com.intellij.uiDesigner.core.GridConstraints(9, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        folkdPwd = new JPasswordField();
+        panel3.add(folkdPwd, new com.intellij.uiDesigner.core.GridConstraints(9, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
     }
 
     /**
