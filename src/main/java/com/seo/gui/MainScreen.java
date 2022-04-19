@@ -266,6 +266,7 @@ public class MainScreen {
         frame.setVisible(true);
 
         if (!new File("./LOG/log_seo-tools.log").isFile()) {
+            new File("./LOG").mkdirs();
             new File("./LOG/log_seo-tools.log").createNewFile();
             LOGGER.info("Create log_seo-tools.log successfully");
         }

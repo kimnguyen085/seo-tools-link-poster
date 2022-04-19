@@ -1,14 +1,12 @@
 package main.java.com.seo.auto.utils;
 
+import org.apache.commons.lang3.SystemUtils;
+
 public class Constants {
 
     public static final int NUMBER_OF_CONCURRENT_TASKS = 3;
     /*ENV VAR*/
-    public static final String API_ADMIN_SUPER_KEY = System.getenv("SMPL_ADMIN_SUPER_APIKEY");
-    public static final String API_ADMIN_SUPER_SECRET = System.getenv("SMPL_ADMIN_SUPER_APISECRET");
-    public static final String API_HOST = System.getenv("SMPL_HOST");
-    public static final String API_PORT = System.getenv("SMPL_PORT");
-    public static final String API_PREFIX = System.getenv("SMPL_PREFIX");
+    public static final boolean IS_MAC = SystemUtils.IS_OS_MAC_OSX;
     public static final String PHANTOM_JS_PATH = "chromedrivers/macos/chromedriver"; // chromedrivers/macos/chromedriver
     public static final String PHANTOM_JS_WINDOW_PATH = "chromedrivers/window/chromedriver.exe";
     public static final String ATMP_SIRET_FILTER=System.getenv("SMPL_ATMP_SIRET_FILTER");
