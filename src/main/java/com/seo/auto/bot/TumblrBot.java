@@ -19,7 +19,7 @@ public class TumblrBot extends BaseBot {
     public boolean login() {
         driver.get("https://www.tumblr.com/");
         try {
-            Thread.sleep(2000l);
+            Thread.sleep(5000l);
             driver.findElement(By.xpath("//a[contains(@href,'login')]")).click();
 
             driver.findElement(By.name("email")).sendKeys(usrName);

@@ -61,7 +61,10 @@ public class ElloCoBot extends BaseBot {
             }
 
             Thread.sleep(2000l);
-            driver.findElement(By.xpath("//button[contains(@class,'PostActionButton forSubmit forPost')]")).click();
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+//            driver.findElement(By.xpath("//button[contains(@class,'PostActionButton forSubmit forPost')]")).click();
+            WebElement button = driver.findElement(By.xpath("//button[contains(@class,'PostActionButton forSubmit forPost')]"));
+            js.executeScript("arguments[0].click();", button);
             Thread.sleep(1000l);
 
             driver.findElement(By.xpath("//button[contains(@class,'Avatar')]")).click();
@@ -70,7 +73,6 @@ public class ElloCoBot extends BaseBot {
             Thread.sleep(2000l);
 
             // scroll to new post
-            JavascriptExecutor js = (JavascriptExecutor) driver;
             WebElement toDivElement = driver.findElements(By.tagName("div")).get(12);
             js.executeScript("arguments[0].scrollIntoView();", toDivElement);
             Thread.sleep(600l);

@@ -7,6 +7,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class CredentialsDialog extends JDialog {
     private JComboBox profileCbb;
     private JButton addNewBtn;
     private JButton deleteBtn;
+    private JButton importBtn;
 
     private ProfilesDialog dialog;
     private static final Logger LOGGER = Logger.getLogger(CredentialsDialog.class);
@@ -51,6 +53,7 @@ public class CredentialsDialog extends JDialog {
         setTitle("Profile Management");
         getRootPane().setDefaultButton(buttonOK);
         reloadProfileCbb();
+        CredentialsDialog component = this;
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -68,7 +71,6 @@ public class CredentialsDialog extends JDialog {
             }
         });
 
-        CredentialsDialog component = this;
         addNewBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -113,6 +115,33 @@ public class CredentialsDialog extends JDialog {
                 reloadProfileCbb();
             }
         });
+
+        importBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                performFileChooser(component);
+            }
+        });
+    }
+
+    private void performFileChooser(CredentialsDialog component) {
+        JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        j.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        // invoke the showsSaveDialog function to show the save dialog
+        int r = j.showSaveDialog(component);
+
+        if (r == JFileChooser.APPROVE_OPTION) {
+            // set the label to the path of the selected directory
+            String filePath = j.getSelectedFile().getAbsolutePath();
+            System.out.println(filePath);
+            AppDataManipulator.importPwdFromCsv(filePath, (String) profileCbb.getSelectedItem());
+            fetchingDataFromBots();
+        }
+        // if the user cancelled the operation
+//        else
+//            l.setText("the user cancelled the operation");
     }
 
     private void fetchingDataFromBots() {
@@ -181,81 +210,6 @@ public class CredentialsDialog extends JDialog {
         }
     }
 
-    private Map<String, Object> constructJsonTreeData() {
-        Map<String, Object> root = new HashedMap<>();
-        Map<String, String> bczMap = new HashedMap<String, String>() {
-            {
-                put("usr", BczBot.usrName);
-                put("pwd", BczBot.pwd);
-            }
-        };
-        Map<String, String> ellocoMap = new HashedMap<String, String>() {
-            {
-                put("usr", ElloCoBot.usrName);
-                put("pwd", ElloCoBot.pwd);
-            }
-        };
-        Map<String, String> flipboardMap = new HashedMap<String, String>() {
-            {
-                put("usr", FlipboardBot.usrName);
-                put("pwd", FlipboardBot.pwd);
-            }
-        };
-        Map<String, String> getPocketMap = new HashedMap<String, String>() {
-            {
-                put("usr", GetPocketBot.usrName);
-                put("pwd", GetPocketBot.pwd);
-            }
-        };
-        Map<String, String> instapaperMap = new HashedMap<String, String>() {
-            {
-                put("usr", InstapaperBot.usrName);
-                put("pwd", InstapaperBot.pwd);
-            }
-        };
-        Map<String, String> scoopItMap = new HashedMap<String, String>() {
-            {
-                put("usr", ScoopItBot.usrName);
-                put("pwd", ScoopItBot.pwd);
-            }
-        };
-        Map<String, String> tumblrMap = new HashedMap<String, String>() {
-            {
-                put("usr", TumblrBot.usrName);
-                put("pwd", TumblrBot.pwd);
-            }
-        };
-        Map<String, String> vingleMap = new HashedMap<String, String>() {
-            {
-                put("usr", VingleBot.usrName);
-                put("pwd", VingleBot.pwd);
-            }
-        };
-        Map<String, String> wpMap = new HashedMap<String, String>() {
-            {
-                put("usr", WordpressBot.usrName);
-                put("pwd", WordpressBot.pwd);
-            }
-        };
-        Map<String, String> folkdMap = new HashedMap<String, String>() {
-            {
-                put("usr", FolkdBot.usrName);
-                put("pwd", FolkdBot.pwd);
-            }
-        };
-        root.put("ElloCo", ellocoMap);
-        root.put("Bcz", bczMap);
-        root.put("Flipboard", flipboardMap);
-        root.put("GetPocket", getPocketMap);
-        root.put("Instapaper", instapaperMap);
-        root.put("ScoopIt", scoopItMap);
-        root.put("Tumblr", tumblrMap);
-        root.put("Vingle", vingleMap);
-        root.put("Wordpress", wpMap);
-        root.put("Folkd", folkdMap);
-        return root;
-    }
-
     private void onCancel() {
         // add your code here if necessary
         dispose();
@@ -288,8 +242,6 @@ public class CredentialsDialog extends JDialog {
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        panel1.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -299,6 +251,9 @@ public class CredentialsDialog extends JDialog {
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
         panel2.add(buttonCancel, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        importBtn = new JButton();
+        importBtn.setText("Import");
+        panel1.add(importBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(10, 3, new Insets(10, 10, 10, 10), -1, -1));
         contentPane.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

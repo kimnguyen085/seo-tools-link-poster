@@ -65,9 +65,9 @@ public class WordpressBot extends BaseBot {
             driver.findElement(By.xpath("//button[text() = 'Embed']")).click();
             Thread.sleep(600l);
             loginFrame.findElement(By.xpath("//button[text() = 'Publish']")).click();
-            Thread.sleep(600l);
+            Thread.sleep(1000l);
             loginFrame.findElement(By.xpath("//button[contains(@class, 'editor-post-publish-button ')]")).click();
-            Thread.sleep(5000l);
+            Thread.sleep(7000l);
             loginFrame.findElement(By.xpath("//a[text() = 'View Post']")).click();
             driver.switchTo().defaultContent();
             Thread.sleep(2000l);

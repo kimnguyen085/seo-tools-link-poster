@@ -9,13 +9,17 @@ import main.java.com.seo.auto.utils.Constants;
 import main.java.com.seo.auto.utils.UtilsMeth;
 import org.apache.log4j.Logger;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppDataManipulator {
     private static final Logger LOGGER = Logger.getLogger(AppDataManipulator.class);
+    private static final String CSV_SEPARATOR = ",";
     public static Profile activeProfile;
 
     public static AppData appData = new AppData();
@@ -155,4 +159,68 @@ public class AppDataManipulator {
         return allProfileName;
     }
 
+    /**
+     * CSV columns order is: name,url, username, password
+     *
+     * @param csvPath
+     * @param profileName
+     */
+    public static void importPwdFromCsv(String csvPath, String profileName) {
+        try {
+            ArrayList<List> arList;
+            ArrayList al;
+            String thisLine;
+            arList = new ArrayList<List>();
+
+            FileInputStream fis = new FileInputStream(csvPath);
+            DataInputStream myInput = new DataInputStream(fis);
+            while ((thisLine = myInput.readLine()) != null) {
+                al = new ArrayList();
+                String[] strar = thisLine.split(CSV_SEPARATOR);
+                al.addAll(Arrays.asList(strar));
+                arList.add(al);
+            }
+
+            Profile profile = new Profile(profileName);
+            // process import
+            arList.stream().forEach(line -> {
+                String url = line.get(1).toString();
+                if (url.contains("bcz.com")) {
+                    profile.setBczCredentials(new Credential("bcz.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("ello.co")) {
+                    profile.setEllocoCredentials(new Credential("ello.co", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("flipboard.com")) {
+                    profile.setFlipboardCredentials(new Credential("flipboard.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("folkd.com")) {
+                    profile.setFolkdCredentials(new Credential("folkd.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("wordpress.com")) {
+                    profile.setWpCredentials(new Credential("wordpress.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("getpocket.com")) {
+                    profile.setGetPocketCredentials(new Credential("getpocket.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("www.instapaper.com")) {
+                    profile.setInstapaperCredentials(new Credential("www.instapaper.com", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("www.scoop.it")) {
+                    profile.setScoopitCredentials(new Credential("www.scoop.it", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("www.vingle.net")) {
+                    profile.setVingleCredentials(new Credential("www.vingle.net", line.get(2).toString(), line.get(3).toString()));
+                }
+                if (url.contains("www.tumblr.com")) {
+                    profile.setTumblrCredentials(new Credential("www.tumblr.com", line.get(2).toString(), line.get(3).toString()));
+                }
+            });
+
+            activeProfile = profile;
+            applyActiveProfile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

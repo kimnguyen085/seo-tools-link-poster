@@ -60,7 +60,7 @@
           <component id="dd8c1" class="javax.swing.JLabel" binding="loadingTumblrLbl">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                <minimum-size width="100" height="-1"/>
+                <minimum-size width="50" height="-1"/>
               </grid>
             </constraints>
             <properties>
@@ -78,7 +78,7 @@
           <component id="1146d" class="javax.swing.JLabel" binding="loadingWPLbl">
             <constraints>
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                <minimum-size width="100" height="-1"/>
+                <minimum-size width="50" height="-1"/>
               </grid>
             </constraints>
             <properties>
@@ -111,7 +111,9 @@
           </component>
           <component id="f6c99" class="javax.swing.JLabel" binding="loadingBczLbl">
             <constraints>
-              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -119,7 +121,9 @@
           </component>
           <component id="681f4" class="javax.swing.JLabel" binding="loadingFlipboardLbl">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -175,7 +179,9 @@
           </component>
           <component id="8d153" class="javax.swing.JLabel" binding="loadingElloCoLbl">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -183,7 +189,9 @@
           </component>
           <component id="3cea5" class="javax.swing.JLabel" binding="loadingInstaLbl">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -191,7 +199,9 @@
           </component>
           <component id="bb67b" class="javax.swing.JLabel" binding="loadingVingleLbl">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -199,7 +209,9 @@
           </component>
           <component id="8ce84" class="javax.swing.JLabel" binding="loadingGetPocketLbl">
             <constraints>
-              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -207,7 +219,9 @@
           </component>
           <component id="42660" class="javax.swing.JLabel" binding="loadingScoopItLbl">
             <constraints>
-              <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
@@ -215,7 +229,9 @@
           </component>
           <component id="5c283" class="javax.swing.JLabel" binding="loadingForlkdLbl">
             <constraints>
-              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <minimum-size width="50" height="-1"/>
+              </grid>
             </constraints>
             <properties>
               <text value=""/>
