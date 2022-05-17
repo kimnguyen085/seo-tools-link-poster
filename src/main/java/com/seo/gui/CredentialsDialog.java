@@ -1,16 +1,16 @@
 package main.java.com.seo.gui;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.com.seo.auto.bot.*;
-import main.java.com.seo.auto.utils.Constants;
-import main.java.com.seo.auto.utils.UtilsMeth;
+import main.java.com.seo.auto.data.AppDataManipulator;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 public class CredentialsDialog extends JDialog {
@@ -38,12 +38,19 @@ public class CredentialsDialog extends JDialog {
     private JTextField vingleUsr;
     private JTextField folkdUsr;
     private JPasswordField folkdPwd;
+    private JComboBox profileCbb;
+    private JButton addNewBtn;
+    private JButton deleteBtn;
+
+    private ProfilesDialog dialog;
     private static final Logger LOGGER = Logger.getLogger(CredentialsDialog.class);
 
     public CredentialsDialog() {
         setContentPane(contentPane);
         setModal(true);
+        setTitle("Profile Management");
         getRootPane().setDefaultButton(buttonOK);
+        reloadProfileCbb();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -58,6 +65,16 @@ public class CredentialsDialog extends JDialog {
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
+            }
+        });
+
+        CredentialsDialog component = this;
+        addNewBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dialog = new ProfilesDialog(component);
+                dialog.setSize(600, 300);
+                dialog.setVisible(true);
             }
         });
 
@@ -77,6 +94,28 @@ public class CredentialsDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         // initialise username password
+        fetchingDataFromBots();
+        profileCbb.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String item = (String) e.getItem();
+                    AppDataManipulator.changeActiveProfile(item);
+                    fetchingDataFromBots();
+                }
+            }
+        });
+        deleteBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String item = (String) profileCbb.getSelectedItem();
+                AppDataManipulator.deleteProfile(item);
+                reloadProfileCbb();
+            }
+        });
+    }
+
+    private void fetchingDataFromBots() {
         bczUsr.setText(BczBot.usrName);
         bczPwd.setText(BczBot.pwd);
         elloCoUsr.setText(ElloCoBot.usrName);
@@ -99,32 +138,47 @@ public class CredentialsDialog extends JDialog {
         folkdPwd.setText(FolkdBot.pwd);
     }
 
-    private void onOK() throws JsonProcessingException {
-        BczBot.usrName = bczUsr.getText();
-        BczBot.pwd = new String(bczPwd.getPassword());
-        ElloCoBot.usrName = elloCoUsr.getText();
-        ElloCoBot.pwd = new String(elloCoPwd.getPassword());
-        FlipboardBot.usrName = flipboardUsr.getText();
-        FlipboardBot.pwd = new String(flipboardPwd.getPassword());
-        GetPocketBot.usrName = getPocketUsr.getText();
-        GetPocketBot.pwd = new String(getPocketPwd.getPassword());
-        InstapaperBot.usrName = instapaperUsr.getText();
-        InstapaperBot.pwd = new String(instapaperPwd.getPassword());
-        ScoopItBot.usrName = scoopItUsr.getText();
-        ScoopItBot.pwd = new String(scoopItPwd.getPassword());
-        TumblrBot.usrName = tumblrUsr.getText();
-        TumblrBot.pwd = new String(tumblrPwd.getPassword());
-        VingleBot.usrName = vingleUsr.getText();
-        VingleBot.pwd = new String(vinglePwd.getPassword());
-        WordpressBot.usrName = wpUsr.getText();
-        WordpressBot.pwd = new String(wpPwd.getPassword());
-        FolkdBot.usrName = folkdUsr.getText();
-        FolkdBot.pwd = new String(folkdPwd.getPassword());
+    public void reloadProfileCbb() {
+        profileCbb.removeAllItems();
+        Arrays.stream(AppDataManipulator.getAllProfileNames()).sorted(Collections.reverseOrder()).forEach(name -> {
+            profileCbb.addItem(name);
+        });
+        if (AppDataManipulator.activeProfile != null) {
+            profileCbb.setSelectedItem(AppDataManipulator.activeProfile.getName());
+            fetchingDataFromBots();
+        }
+    }
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> mapObj = constructJsonTreeData();
-        UtilsMeth.writeFile(Constants.CREDENTIALS_DEFAULT_DIRECTORY_FILE, mapper.writeValueAsString(mapObj));
-        dispose();
+    private void onOK() throws JsonProcessingException {
+        String profileName = (String) profileCbb.getSelectedItem();
+
+        if (profileName == null || profileName.equals("")) {
+            JOptionPane.showMessageDialog(this, "Profile Name cannot be empty !", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            BczBot.usrName = bczUsr.getText();
+            BczBot.pwd = new String(bczPwd.getPassword());
+            ElloCoBot.usrName = elloCoUsr.getText();
+            ElloCoBot.pwd = new String(elloCoPwd.getPassword());
+            FlipboardBot.usrName = flipboardUsr.getText();
+            FlipboardBot.pwd = new String(flipboardPwd.getPassword());
+            GetPocketBot.usrName = getPocketUsr.getText();
+            GetPocketBot.pwd = new String(getPocketPwd.getPassword());
+            InstapaperBot.usrName = instapaperUsr.getText();
+            InstapaperBot.pwd = new String(instapaperPwd.getPassword());
+            ScoopItBot.usrName = scoopItUsr.getText();
+            ScoopItBot.pwd = new String(scoopItPwd.getPassword());
+            TumblrBot.usrName = tumblrUsr.getText();
+            TumblrBot.pwd = new String(tumblrPwd.getPassword());
+            VingleBot.usrName = vingleUsr.getText();
+            VingleBot.pwd = new String(vinglePwd.getPassword());
+            WordpressBot.usrName = wpUsr.getText();
+            WordpressBot.pwd = new String(wpPwd.getPassword());
+            FolkdBot.usrName = folkdUsr.getText();
+            FolkdBot.pwd = new String(folkdPwd.getPassword());
+
+            AppDataManipulator.modifyProfile(profileName);
+            dispose();
+        }
     }
 
     private Map<String, Object> constructJsonTreeData() {
@@ -230,10 +284,10 @@ public class CredentialsDialog extends JDialog {
      */
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
-        contentPane.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+        contentPane.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 1, new Insets(10, 10, 10, 10), -1, -1));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        contentPane.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         panel1.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
@@ -247,7 +301,7 @@ public class CredentialsDialog extends JDialog {
         panel2.add(buttonCancel, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(10, 3, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        contentPane.add(panel3, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
         label1.setText("Bcz");
         panel3.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -318,6 +372,17 @@ public class CredentialsDialog extends JDialog {
         panel3.add(wpPwd, new com.intellij.uiDesigner.core.GridConstraints(8, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         folkdPwd = new JPasswordField();
         panel3.add(folkdPwd, new com.intellij.uiDesigner.core.GridConstraints(9, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JPanel panel4 = new JPanel();
+        panel4.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 10, 0, 10), 0, 0));
+        contentPane.add(panel4, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(-1, 80), new Dimension(-1, 80), new Dimension(-1, 80), 0, false));
+        profileCbb = new JComboBox();
+        panel4.add(profileCbb, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 20), new Dimension(-1, 20), null, 0, false));
+        addNewBtn = new JButton();
+        addNewBtn.setText("Add New");
+        panel4.add(addNewBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 30), new Dimension(-1, 30), null, 0, false));
+        deleteBtn = new JButton();
+        deleteBtn.setText("Delete");
+        panel4.add(deleteBtn, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

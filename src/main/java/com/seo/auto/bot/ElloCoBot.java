@@ -3,10 +3,7 @@ package main.java.com.seo.auto.bot;
 import main.java.com.seo.auto.utils.ClipboardUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 import java.time.LocalDateTime;

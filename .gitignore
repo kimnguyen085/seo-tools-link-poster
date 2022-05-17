@@ -20,6 +20,9 @@
 
 /credentials
 
+#ChromeData
+/ChromeData/*
+
 #chromedriver
 /chromedrivers/*
 

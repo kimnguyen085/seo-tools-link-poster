@@ -248,6 +248,7 @@ public class UtilsMeth {
     public static String readFile(String filePath) throws IOException {
         String data = FileUtils.readFileToString(new File(filePath), String.valueOf(StandardCharsets.UTF_8));
         return decrypt(data);
+//        return data;
     }
 
     public static String getLicenseUrlFromFile(String filename) {

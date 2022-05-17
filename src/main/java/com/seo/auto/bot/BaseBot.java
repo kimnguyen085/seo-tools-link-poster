@@ -89,6 +89,9 @@ public abstract class BaseBot implements BotInterface {
                 prefs.put("download.default_directory", new File(Constants.DOWNLOAD_DEFAULT_DIRECTORY).getAbsolutePath());
                 options.addArguments("--no-sandbox");
                 options.setExperimentalOption("prefs", prefs);
+//                options.addArguments("user-data-dir="+System.getProperty("user.dir") + "/" + Constants.PHANTOM_JS_CHROME_DATA_PATH);
+//
+//                options.addArguments("profile-directory=ProfileKim");
                 if (System.getenv("SMPL_IS_CONTAINER") != null) {
                     options.addArguments("--user-agent=" + System.getenv("SMPL_USER_AGENT"));
                 }
