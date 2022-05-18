@@ -51,7 +51,7 @@ public class CredentialsDialog extends JDialog {
     private ProfilesDialog dialog;
     private static final Logger LOGGER = Logger.getLogger(CredentialsDialog.class);
 
-    public CredentialsDialog() {
+    public CredentialsDialog(MainScreen mainScreen) {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Profile Management");
@@ -63,6 +63,7 @@ public class CredentialsDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     onOK();
+                    mainScreen.fetchDataUI();
                 } catch (JsonProcessingException ex) {
                     LOGGER.error(ex.getMessage());
                 }
@@ -101,16 +102,7 @@ public class CredentialsDialog extends JDialog {
 
         // initialise username password
         fetchingDataToUI();
-        profileCbb.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    String item = (String) e.getItem();
-                    AppDataManipulator.changeActiveProfile(item);
-                    fetchingDataToUI();
-                }
-            }
-        });
+        profileCbb.addItemListener(getProfileCbbListener());
         deleteBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -147,7 +139,6 @@ public class CredentialsDialog extends JDialog {
         if (r == JFileChooser.APPROVE_OPTION) {
             // set the label to the path of the selected directory
             String filePath = j.getSelectedFile().getAbsolutePath();
-            System.out.println(filePath);
             AppDataManipulator.importPwdFromCsv(filePath, (String) profileCbb.getSelectedItem());
             fetchingDataToUI();
         }
@@ -187,10 +178,25 @@ public class CredentialsDialog extends JDialog {
         Arrays.stream(AppDataManipulator.getAllProfileNames()).sorted(Collections.reverseOrder()).forEach(name -> {
             profileCbb.addItem(name);
         });
+
         if (AppDataManipulator.activeProfile != null) {
             profileCbb.setSelectedItem(AppDataManipulator.activeProfile.getName());
             fetchingDataToUI();
         }
+    }
+
+    private ItemListener getProfileCbbListener() {
+        return new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    System.out.println("freaking thing trigger" + (String) e.getItem());
+                    String item = (String) e.getItem();
+                    AppDataManipulator.changeActiveProfile(item);
+                    fetchingDataToUI();
+                }
+            }
+        };
     }
 
     private void onOK() throws JsonProcessingException {
@@ -199,28 +205,29 @@ public class CredentialsDialog extends JDialog {
         if (profileName == null || profileName.equals("")) {
             JOptionPane.showMessageDialog(this, "Profile Name cannot be empty !", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            BczBot.usrName = bczUsr.getText();
-            BczBot.pwd = new String(bczPwd.getPassword());
-            ElloCoBot.usrName = elloCoUsr.getText();
-            ElloCoBot.pwd = new String(elloCoPwd.getPassword());
-            FlipboardBot.usrName = flipboardUsr.getText();
-            FlipboardBot.pwd = new String(flipboardPwd.getPassword());
-            GetPocketBot.usrName = getPocketUsr.getText();
-            GetPocketBot.pwd = new String(getPocketPwd.getPassword());
-            InstapaperBot.usrName = instapaperUsr.getText();
-            InstapaperBot.pwd = new String(instapaperPwd.getPassword());
-            ScoopItBot.usrName = scoopItUsr.getText();
-            ScoopItBot.pwd = new String(scoopItPwd.getPassword());
-            TumblrBot.usrName = tumblrUsr.getText();
-            TumblrBot.pwd = new String(tumblrPwd.getPassword());
-            VingleBot.usrName = vingleUsr.getText();
-            VingleBot.pwd = new String(vinglePwd.getPassword());
-            WordpressBot.usrName = wpUsr.getText();
-            WordpressBot.pwd = new String(wpPwd.getPassword());
-            FolkdBot.usrName = folkdUsr.getText();
-            FolkdBot.pwd = new String(folkdPwd.getPassword());
+//            BczBot.usrName = bczUsr.getText();
+//            BczBot.pwd = new String(bczPwd.getPassword());
+//            ElloCoBot.usrName = elloCoUsr.getText();
+//            ElloCoBot.pwd = new String(elloCoPwd.getPassword());
+//            FlipboardBot.usrName = flipboardUsr.getText();
+//            FlipboardBot.pwd = new String(flipboardPwd.getPassword());
+//            GetPocketBot.usrName = getPocketUsr.getText();
+//            GetPocketBot.pwd = new String(getPocketPwd.getPassword());
+//            InstapaperBot.usrName = instapaperUsr.getText();
+//            InstapaperBot.pwd = new String(instapaperPwd.getPassword());
+//            ScoopItBot.usrName = scoopItUsr.getText();
+//            ScoopItBot.pwd = new String(scoopItPwd.getPassword());
+//            TumblrBot.usrName = tumblrUsr.getText();
+//            TumblrBot.pwd = new String(tumblrPwd.getPassword());
+//            VingleBot.usrName = vingleUsr.getText();
+//            VingleBot.pwd = new String(vinglePwd.getPassword());
+//            WordpressBot.usrName = wpUsr.getText();
+//            WordpressBot.pwd = new String(wpPwd.getPassword());
+//            FolkdBot.usrName = folkdUsr.getText();
+//            FolkdBot.pwd = new String(folkdPwd.getPassword());
 
             AppDataManipulator.modifyProfile(profileName, contractIdField.getText(), noteField.getText().trim());
+            AppDataManipulator.changeActiveProfile(profileName);
             dispose();
         }
     }
@@ -230,12 +237,6 @@ public class CredentialsDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        CredentialsDialog dialog = new CredentialsDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer

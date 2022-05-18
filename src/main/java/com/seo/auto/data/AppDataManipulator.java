@@ -25,6 +25,8 @@ public class AppDataManipulator {
     public static AppData appData = new AppData();
 
     public static void applyActiveProfile() {
+        if (activeProfile == null) return;
+
         BczBot.usrName = activeProfile.getBczCredentials().getUsrName();
         BczBot.pwd = activeProfile.getBczCredentials().getPwd();
         ElloCoBot.usrName = activeProfile.getEllocoCredentials().getUsrName();

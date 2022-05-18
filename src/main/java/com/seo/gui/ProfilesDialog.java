@@ -21,7 +21,7 @@ public class ProfilesDialog extends JDialog {
 
     public ProfilesDialog(CredentialsDialog component, Profile profile) {
         this.profile = profile;
-        if (profile != null) {
+        if (profile != null) { // edit mode
             initialiseFields();
         }
         setContentPane(contentPane);
@@ -59,6 +59,7 @@ public class ProfilesDialog extends JDialog {
 
     private void initialiseFields() {
         profileNameTxt.setText(profile.getName());
+        profileNameTxt.setEditable(false);
         contractIdTxt.setText(profile.getContractId());
         noteTxt.setText(profile.getNote());
     }
@@ -73,7 +74,7 @@ public class ProfilesDialog extends JDialog {
             } else {
                 AppDataManipulator.createProfile(profileNameTxt.getText(), contractIdTxt.getText(), noteTxt.getText().trim());
             }
-
+            AppDataManipulator.changeActiveProfile(profileNameTxt.getText());
             component.reloadProfileCbb();
             dispose();
         }
