@@ -140,7 +140,27 @@
             <artifactId>forms_rt</artifactId>
             <version>7.0.3</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.32.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-sheets</artifactId>
+            <version>v4-rev20210629-1.32.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mixpanel</groupId>
+            <artifactId>mixpanel-java</artifactId>
+            <version>1.4.4</version>
+        </dependency>
 
     </dependencies>
 
@@ -170,6 +190,11 @@
                 </includes>
                 <directory>${project.basedir}</directory>
                 <targetPath>${project.build.directory}</targetPath>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>googleDoc</directory>
+                <targetPath>${project.build.directory}/googleDoc</targetPath>
             </resource>
         </resources>
         <plugins>

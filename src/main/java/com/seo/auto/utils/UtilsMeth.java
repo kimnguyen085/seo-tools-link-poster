@@ -251,6 +251,11 @@ public class UtilsMeth {
 //        return data;
     }
 
+    public static String readTxtFile(String filePath) throws IOException {
+        String data = FileUtils.readFileToString(new File(filePath), String.valueOf(StandardCharsets.UTF_8));
+        return data;
+    }
+
     public static String getLicenseUrlFromFile(String filename) {
         String url = "";
         File file = new File(filename);

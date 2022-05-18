@@ -7,6 +7,7 @@ import main.java.com.seo.auto.bot.*;
 import main.java.com.seo.auto.data.AppDataManipulator;
 import main.java.com.seo.auto.service.MixpanelService;
 import main.java.com.seo.auto.utils.Constants;
+import main.java.com.seo.auto.utils.PermissionUsageUtils;
 import main.java.com.seo.auto.utils.UtilsMeth;
 import org.apache.log4j.Logger;
 
@@ -16,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -255,7 +257,20 @@ public class MainScreen {
 
     public static void main(String[] args) throws IOException {
         JFrame frame = new JFrame("MainScreen");
-        frame.setContentPane(new MainScreen().MainScreen);
+        // checking permission to use the app
+        try {
+            if (PermissionUsageUtils.checkPermission()) {
+                frame.setContentPane(new MainScreen().MainScreen);
+            } else {
+                frame.setContentPane(new ErrorScreen().getErrorScreen());
+                frame.setMinimumSize(new Dimension(658, 550));
+            }
+        } catch (GeneralSecurityException e) {
+            frame.setContentPane(new ErrorScreen().getErrorScreen());
+            frame.setMinimumSize(new Dimension(658, 550));
+            throw new RuntimeException(e);
+        }
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
