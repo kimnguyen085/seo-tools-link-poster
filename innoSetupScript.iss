@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SeoTool"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "SillyGigs, Inc."
 #define MyAppExeName "seo-tools.exe"
 #define MyAppAssocName MyAppName + " File"
@@ -37,8 +37,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\seo-tools.jar"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\chromedrivers\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\libs\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\googleDoc\*"; DestDir: "{app}\googleDoc"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\chromedrivers\*"; DestDir: "{app}\chromedrivers"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\libs\*"; DestDir: "{app}\libs"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
@@ -53,5 +54,5 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Parameters: "-c "; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall skipifsilent 
 

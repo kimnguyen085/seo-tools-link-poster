@@ -178,8 +178,8 @@ public class CredentialsDialog extends JDialog {
         folkdUsr.setText(FolkdBot.usrName);
         folkdPwd.setText(FolkdBot.pwd);
 
-        contractIdField.setText(AppDataManipulator.activeProfile.getContractId());
-        noteField.setText(AppDataManipulator.activeProfile.getNote());
+        contractIdField.setText(AppDataManipulator.activeProfile == null ? "" : AppDataManipulator.activeProfile.getContractId());
+        noteField.setText(AppDataManipulator.activeProfile == null ? "" : AppDataManipulator.activeProfile.getNote());
     }
 
     public void reloadProfileCbb() {

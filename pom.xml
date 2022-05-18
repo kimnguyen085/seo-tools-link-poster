@@ -181,7 +181,7 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>chromedrivers</directory>
-                <targetPath>${project.build.directory}/chromedrivers/chromedrivers</targetPath>
+                <targetPath>${project.build.directory}/chromedrivers</targetPath>
             </resource>
             <resource>
                 <filtering>false</filtering>
@@ -211,7 +211,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/libs/libs
+                                ${project.build.directory}/libs
                             </outputDirectory>
                         </configuration>
                     </execution>
