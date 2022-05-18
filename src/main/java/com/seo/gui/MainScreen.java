@@ -122,6 +122,40 @@ public class MainScreen {
         return null;
     }
 
+    private String findCorrelatedUserNameForBot(BaseBot targetBot) {
+        if (targetBot instanceof ElloCoBot) {
+            return ElloCoBot.usrName;
+        }
+        if (targetBot instanceof BczBot) {
+            return BczBot.usrName;
+        }
+        if (targetBot instanceof VingleBot) {
+            return VingleBot.usrName;
+        }
+        if (targetBot instanceof InstapaperBot) {
+            return InstapaperBot.usrName;
+        }
+        if (targetBot instanceof TumblrBot) {
+            return TumblrBot.usrName;
+        }
+        if (targetBot instanceof WordpressBot) {
+            return WordpressBot.usrName;
+        }
+        if (targetBot instanceof FlipboardBot) {
+            return FlipboardBot.usrName;
+        }
+        if (targetBot instanceof GetPocketBot) {
+            return GetPocketBot.usrName;
+        }
+        if (targetBot instanceof ScoopItBot) {
+            return ScoopItBot.usrName;
+        }
+        if (targetBot instanceof FolkdBot) {
+            return FolkdBot.usrName;
+        }
+        return null;
+    }
+
     public MainScreen() {
 
         submitBtn.addMouseListener(new MouseAdapter() {
@@ -136,7 +170,7 @@ public class MainScreen {
                     service.execute(new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println("bot number " + bot.toString());
+                            System.out.println("bot id " + bot.toString());
                             addInfoLogMessage(bot.toString() + " has started");
                             bot.openPhantomJs(openBrowser.isSelected());
                             if (!bot.login()) {
@@ -153,37 +187,20 @@ public class MainScreen {
                                 addErrorLogMessage(bot.toString() + " has failed to post link");
                                 showPostLinkFailedMessage(bot);
                                 bot.closePhantomJsBr();
-                                MixpanelService.getInstance().userFailedPostedLinkEvent(bot.getName());
+                                MixpanelService.getInstance().userFailedPostedLinkEvent(bot.getName(), findCorrelatedUserNameForBot(bot));
                                 return;
                             }
                             addInfoLogMessage(bot.toString() + " has posted link. Please check screenshots folder for preview");
 
                             showSuccessMessage(bot);
                             bot.closePhantomJsBr();
-                            MixpanelService.getInstance().userSuccessPostedLinkEvent(bot.getName());
+                            MixpanelService.getInstance().userSuccessPostedLinkEvent(bot.getName(), findCorrelatedUserNameForBot(bot));
                         }
                     });
                 });
                 service.shutdown();
 
                 submitBtn.setEnabled(true);
-//                    // log to area
-//                    Path filePath = Path.of("./LOG/log_seo-tools.log");
-//                    String fileContent = "";
-//                    byte[] bytes = new byte[0];
-//                    try {
-//                        bytes = Files.readAllBytes(filePath);
-//                    } catch (IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                    fileContent = new String(bytes);
-//                    txtLogArea.append(fileContent);
-
-//                    try {
-//                        service.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-//                    } catch (InterruptedException exx) {
-//                        exx.printStackTrace();
-//                    }
             }
         });
         stopBtn.addMouseListener(new MouseAdapter() {
@@ -265,10 +282,10 @@ public class MainScreen {
                 frame.setContentPane(new ErrorScreen().getErrorScreen());
                 frame.setMinimumSize(new Dimension(658, 550));
             }
-        } catch (GeneralSecurityException e) {
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
             frame.setContentPane(new ErrorScreen().getErrorScreen());
             frame.setMinimumSize(new Dimension(658, 550));
-            throw new RuntimeException(e);
         }
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

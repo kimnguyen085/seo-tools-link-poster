@@ -22,6 +22,7 @@ public class MixpanelService {
     private static final String MIXPANEL_API_KEY = "s98sJuFTg+HFhHUBt+vvGhM/cMhM2hncL2DFN5S7N6tFLyNcfbSEEw==";
     private static final String MIXPANEL_EVENT_TIME = "TIME";
     private static final String MIXPANEL_EVENT_NAME = "NAME";
+    private static final String MIXPANEL_EVENT_USER_NAME = "USER";
 
     private static final String MIXPANEL_EVENT_BOT_USAGES = "BOT USAGE";
     private static final String MIXPANEL_EVENT_MAC_ADDRESS = "MAC ADDRESS";
@@ -40,15 +41,17 @@ public class MixpanelService {
         sendEventToMixpanel(props ,MixpanelTrackEvent.USER_INITIATED_POSTING_LINK);
     }
 
-    public void userSuccessPostedLinkEvent(String botName) {
+    public void userSuccessPostedLinkEvent(String botName, String userName) {
         JSONObject props = generateBaseProperties(MixpanelTrackEvent.USER_POSTED_LINK_SUCCESS);
         props.put(MIXPANEL_EVENT_BOT_USAGES, botName);
+        props.put(MIXPANEL_EVENT_USER_NAME, userName);
         sendEventToMixpanel(props ,MixpanelTrackEvent.USER_POSTED_LINK_SUCCESS);
     }
 
-    public void userFailedPostedLinkEvent(String botName) {
+    public void userFailedPostedLinkEvent(String botName, String userName) {
         JSONObject props = generateBaseProperties(MixpanelTrackEvent.USER_POSTED_LINK_FAILED);
         props.put(MIXPANEL_EVENT_BOT_USAGES, botName);
+        props.put(MIXPANEL_EVENT_USER_NAME, userName);
         sendEventToMixpanel(props ,MixpanelTrackEvent.USER_POSTED_LINK_FAILED);
     }
 

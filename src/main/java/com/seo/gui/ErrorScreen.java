@@ -2,6 +2,7 @@ package main.java.com.seo.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import main.java.com.seo.auto.utils.UtilsMeth;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -11,10 +12,15 @@ import java.util.Locale;
 
 public class ErrorScreen {
     private JPanel panel1;
-    private JLabel erroLbl;
+    private JTextArea errorTxt;
 
     public JPanel getErrorScreen() {
         return panel1;
+    }
+
+    public ErrorScreen() {
+        errorTxt.setText("You do not have permission to use this application. \nPlease help to contact your admin to register your pc." +
+                "\nYour computer id is: " + UtilsMeth.getMacAddress());
     }
 
     {
@@ -34,9 +40,36 @@ public class ErrorScreen {
     private void $$$setupUI$$$() {
         panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        erroLbl = new JLabel();
-        erroLbl.setText("You do not have permission to use this application. Please help to contact your admin for further details.");
-        panel1.add(erroLbl, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        errorTxt = new JTextArea();
+        errorTxt.setEditable(false);
+        errorTxt.setEnabled(true);
+        Font errorTxtFont = this.$$$getFont$$$(null, -1, 18, errorTxt.getFont());
+        if (errorTxtFont != null) errorTxt.setFont(errorTxtFont);
+        errorTxt.setSelectedTextColor(new Color(-11589189));
+        errorTxt.setText("");
+        panel1.add(errorTxt, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
     /**
