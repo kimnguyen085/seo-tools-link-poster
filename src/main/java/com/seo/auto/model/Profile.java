@@ -2,6 +2,8 @@ package main.java.com.seo.auto.model;
 
 public class Profile {
     private String name;
+    private String contractId;
+    private String note;
     private Credential bczCredentials;
     private Credential ellocoCredentials;
     private Credential flipboardCredentials;
@@ -106,5 +108,21 @@ public class Profile {
 
     public void setFolkdCredentials(Credential folkdCredentials) {
         this.folkdCredentials = folkdCredentials;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

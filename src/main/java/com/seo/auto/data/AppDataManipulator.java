@@ -84,13 +84,15 @@ public class AppDataManipulator {
         applyActiveProfile();
     }
 
-    public static void createProfile(String name) {
+    public static void createProfile(String name, String contractId, String note) {
         List<Profile> profiles = appData.getProfiles();
         if (profiles == null) {
             profiles = new ArrayList<>();
         }
 
         Profile toBeCreated = initialiseEmptyProfile(name);
+        toBeCreated.setContractId(contractId);
+        toBeCreated.setNote(note);
         profiles.add(toBeCreated);
         appData.setProfiles(profiles);
     }
@@ -112,8 +114,10 @@ public class AppDataManipulator {
         return profile;
     }
 
-    public static void modifyProfile(String profileName) {
+    public static void modifyProfile(String profileName, String contractId, String note) {
         Profile profile = new Profile(profileName);
+        profile.setContractId(contractId);
+        profile.setNote(note);
 
         profile.setBczCredentials(new Credential("bcz.com", BczBot.usrName, BczBot.pwd));
         profile.setEllocoCredentials(new Credential("ello.co", ElloCoBot.usrName, ElloCoBot.pwd));

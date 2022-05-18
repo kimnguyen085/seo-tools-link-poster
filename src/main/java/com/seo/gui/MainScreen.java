@@ -192,7 +192,7 @@ public class MainScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dialog = new CredentialsDialog();
-                dialog.setSize(600, 600);
+                dialog.setSize(600, 550);
                 dialog.setVisible(true);
             }
         });
