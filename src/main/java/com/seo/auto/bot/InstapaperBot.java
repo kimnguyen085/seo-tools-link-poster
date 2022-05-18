@@ -39,6 +39,11 @@ public class InstapaperBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "InstapaperBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//a[contains(@data-modal,'add_link_modal')]")).click();

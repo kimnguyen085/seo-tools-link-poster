@@ -36,6 +36,11 @@ public class VingleBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "VingleBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             // bloody vingle using reactjs

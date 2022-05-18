@@ -28,6 +28,7 @@ public abstract class BaseBot implements BotInterface {
     protected WebDriver driver;
 
     public abstract boolean login();
+    public abstract String getName();
 
     public abstract boolean postLink(String link);
 

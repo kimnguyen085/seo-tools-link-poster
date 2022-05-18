@@ -38,6 +38,11 @@ public class KofiBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "KofiBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
 //            driver.get("https://ko-fi.com/manage/mypage");

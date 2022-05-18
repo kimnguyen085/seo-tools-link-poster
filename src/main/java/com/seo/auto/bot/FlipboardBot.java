@@ -51,6 +51,11 @@ public class FlipboardBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "FlipboardBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//button[contains(@data-vars-button-name,'navbar-flip-compose')]")).click();

@@ -48,6 +48,11 @@ public class FolkdBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "FolkdBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.get("https://folkd.com/page/submit.html");

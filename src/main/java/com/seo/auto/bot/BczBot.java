@@ -38,6 +38,11 @@ public class BczBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "BczBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//a[contains(@href, 'edit.php')]")).click();

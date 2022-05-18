@@ -38,6 +38,11 @@ public class TumblrBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "TumblrBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//a[contains(@aria-label,'New post')]")).click();

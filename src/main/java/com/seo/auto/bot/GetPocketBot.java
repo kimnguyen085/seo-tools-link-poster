@@ -36,6 +36,11 @@ public class GetPocketBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "GetPocketBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.navigate().to("https://getpocket.com/my-list");

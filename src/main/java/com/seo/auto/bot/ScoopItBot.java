@@ -38,6 +38,11 @@ public class ScoopItBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "ScoopItBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;

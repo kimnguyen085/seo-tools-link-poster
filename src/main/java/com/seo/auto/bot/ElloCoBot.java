@@ -40,6 +40,11 @@ public class ElloCoBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "ElloCoBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//button[contains(@class,'NavbarOmniButton')]")).click();

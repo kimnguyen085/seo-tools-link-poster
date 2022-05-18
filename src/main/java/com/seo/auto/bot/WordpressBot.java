@@ -41,6 +41,11 @@ public class WordpressBot extends BaseBot {
     }
 
     @Override
+    public String getName() {
+        return "WordpressBot";
+    }
+
+    @Override
     public boolean postLink(String link) {
         try {
             driver.findElement(By.xpath("//a[@title = 'Create a New Post']")).click();

@@ -272,6 +272,29 @@ public class UtilsMeth {
         return url;
     }
 
+    public static String getMacAddress() {
+        InetAddress localHost = null;
+        try {
+            localHost = InetAddress.getLocalHost();
+            NetworkInterface ni = NetworkInterface.getByInetAddress(localHost);
+            byte[] hardwareAddress = ni.getHardwareAddress();
+
+            String[] hexadecimal = new String[hardwareAddress.length];
+            for (int i = 0; i < hardwareAddress.length; i++) {
+                hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
+            }
+            String macAddress = String.join("-", hexadecimal);
+            return macAddress;
+        } catch (UnknownHostException e) {
+            LOGGER.error(e.getMessage());
+//            throw new RuntimeException(e);
+            return "Unknown host";
+        } catch (SocketException e) {
+//            throw new RuntimeException(e);
+            LOGGER.error(e.getMessage());
+            return "Unknown socket";
+        }
+    }
 
     static String randInt(int min, int max) {
         return Integer.toString(new Random().nextInt((max - min) + 1) + min);
