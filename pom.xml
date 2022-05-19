@@ -188,6 +188,9 @@
                 <includes>
                     <include>*.exe</include>
                 </includes>
+                <excludes>
+                    <exclude>*Converter*.exe</exclude>
+                </excludes>
                 <directory>${project.basedir}</directory>
                 <targetPath>${project.build.directory}</targetPath>
             </resource>
@@ -232,6 +235,33 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <!-- If we want to have everything in 1 jar, use below assembly plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>build-keygen</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>main.java.com.seo.gui.KeyGen</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>KeyGen</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

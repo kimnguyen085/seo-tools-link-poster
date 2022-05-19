@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SeoTool"
-#define MyAppVersion "1.0.1"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "SillyGigs, Inc."
 #define MyAppExeName "seo-tools.exe"
 #define MyAppExeDebugName "seo-tools-debug.exe"
