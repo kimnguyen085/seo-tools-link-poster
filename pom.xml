@@ -196,8 +196,8 @@
             </resource>
             <resource>
                 <filtering>false</filtering>
-                <directory>googleDoc</directory>
-                <targetPath>${project.build.directory}/googleDoc</targetPath>
+                <directory>licenseServer</directory>
+                <targetPath>${project.build.directory}/licenseServer</targetPath>
             </resource>
         </resources>
         <plugins>

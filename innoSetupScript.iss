@@ -39,7 +39,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\{#MyAppExeDebugName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\seo-tools.jar"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\googleDoc\*"; DestDir: "{app}\googleDoc"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\licenseServer\*"; DestDir: "{app}\licenseServer"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\chromedrivers\*"; DestDir: "{app}\chromedrivers"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\Admin\Desktop\seo-tools-package-v1.0.0\seo-tools\target\libs\*"; DestDir: "{app}\libs"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

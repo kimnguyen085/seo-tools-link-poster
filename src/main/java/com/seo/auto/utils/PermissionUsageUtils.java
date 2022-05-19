@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class PermissionUsageUtils {
 
-    private static final String GOOGLE_BASE_PATH = System.getProperty("user.dir") + "/googleDoc";
+    private static final String GOOGLE_BASE_PATH = System.getProperty("user.dir") + "/licenseServer";
     private static final String APPLICATION_NAME = "Seo Tools link poster";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = GOOGLE_BASE_PATH + "/tokens";
