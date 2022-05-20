@@ -172,6 +172,7 @@ public class MainScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 addInfoLogMessage(":::......::::::::: Bot is started :::......:::::::::");
+                resetStatusesField();
                 initializeBot();
                 submitBtn.setEnabled(false);
                 service = Executors.newFixedThreadPool(Constants.NUMBER_OF_CONCURRENT_TASKS);
@@ -234,6 +235,19 @@ public class MainScreen {
         });
 
         loadAppData();
+    }
+
+    private void resetStatusesField() {
+        loadingElloCoLbl.setText("");
+        loadingBczLbl.setText("");
+        loadingVingleLbl.setText("");
+        loadingInstaLbl.setText("");
+        loadingTumblrLbl.setText("");
+        loadingWPLbl.setText("");
+        loadingFlipboardLbl.setText("");
+        loadingGetPocketLbl.setText("");
+        loadingScoopItLbl.setText("");
+        loadingForlkdLbl.setText("");
     }
 
     private void loadAppData() {

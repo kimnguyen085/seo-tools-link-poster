@@ -205,26 +205,26 @@ public class CredentialsDialog extends JDialog {
         if (profileName == null || profileName.equals("")) {
             JOptionPane.showMessageDialog(this, "Profile Name cannot be empty !", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-//            BczBot.usrName = bczUsr.getText();
-//            BczBot.pwd = new String(bczPwd.getPassword());
-//            ElloCoBot.usrName = elloCoUsr.getText();
-//            ElloCoBot.pwd = new String(elloCoPwd.getPassword());
-//            FlipboardBot.usrName = flipboardUsr.getText();
-//            FlipboardBot.pwd = new String(flipboardPwd.getPassword());
-//            GetPocketBot.usrName = getPocketUsr.getText();
-//            GetPocketBot.pwd = new String(getPocketPwd.getPassword());
-//            InstapaperBot.usrName = instapaperUsr.getText();
-//            InstapaperBot.pwd = new String(instapaperPwd.getPassword());
-//            ScoopItBot.usrName = scoopItUsr.getText();
-//            ScoopItBot.pwd = new String(scoopItPwd.getPassword());
-//            TumblrBot.usrName = tumblrUsr.getText();
-//            TumblrBot.pwd = new String(tumblrPwd.getPassword());
-//            VingleBot.usrName = vingleUsr.getText();
-//            VingleBot.pwd = new String(vinglePwd.getPassword());
-//            WordpressBot.usrName = wpUsr.getText();
-//            WordpressBot.pwd = new String(wpPwd.getPassword());
-//            FolkdBot.usrName = folkdUsr.getText();
-//            FolkdBot.pwd = new String(folkdPwd.getPassword());
+            BczBot.usrName = bczUsr.getText();
+            BczBot.pwd = new String(bczPwd.getPassword());
+            ElloCoBot.usrName = elloCoUsr.getText();
+            ElloCoBot.pwd = new String(elloCoPwd.getPassword());
+            FlipboardBot.usrName = flipboardUsr.getText();
+            FlipboardBot.pwd = new String(flipboardPwd.getPassword());
+            GetPocketBot.usrName = getPocketUsr.getText();
+            GetPocketBot.pwd = new String(getPocketPwd.getPassword());
+            InstapaperBot.usrName = instapaperUsr.getText();
+            InstapaperBot.pwd = new String(instapaperPwd.getPassword());
+            ScoopItBot.usrName = scoopItUsr.getText();
+            ScoopItBot.pwd = new String(scoopItPwd.getPassword());
+            TumblrBot.usrName = tumblrUsr.getText();
+            TumblrBot.pwd = new String(tumblrPwd.getPassword());
+            VingleBot.usrName = vingleUsr.getText();
+            VingleBot.pwd = new String(vinglePwd.getPassword());
+            WordpressBot.usrName = wpUsr.getText();
+            WordpressBot.pwd = new String(wpPwd.getPassword());
+            FolkdBot.usrName = folkdUsr.getText();
+            FolkdBot.pwd = new String(folkdPwd.getPassword());
 
             AppDataManipulator.modifyProfile(profileName, contractIdField.getText(), noteField.getText().trim());
             AppDataManipulator.changeActiveProfile(profileName);

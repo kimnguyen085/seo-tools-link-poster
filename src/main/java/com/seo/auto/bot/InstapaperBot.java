@@ -28,6 +28,12 @@ public class InstapaperBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.id("log_in")).click();
             Thread.sleep(4000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//div[contains(text(),'Sorry, the email and password provided do not match')]")).isEmpty()) { // captcha
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

@@ -27,6 +27,12 @@ public class TumblrBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.xpath("//button[contains(@aria-label,'Log in')]")).click();
             Thread.sleep(2000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//div[contains(@data-has-error,'true')]")).isEmpty()) { // captcha
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

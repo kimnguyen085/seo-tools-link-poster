@@ -40,6 +40,14 @@ public class FlipboardBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.xpath("//button[contains(@data-vars-button-name,'login__form-submit')]")).click();
             Thread.sleep(7000l);
+
+            // Check login success
+            pageSource = driver.getPageSource();
+            if (!Jsoup.parse(pageSource).getElementsByAttributeValue("class", "message--error").isEmpty() ||
+                    !driver.findElements(By.xpath("//div[contains(@id,'recaptcha-v2')]")).isEmpty()) {
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

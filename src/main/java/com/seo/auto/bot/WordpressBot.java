@@ -30,6 +30,12 @@ public class WordpressBot extends BaseBot {
             driver.findElement(By.name("password")).sendKeys(pwd);
             driver.findElement(By.xpath("//button[@type = 'submit']")).click();
             Thread.sleep(3000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//div[contains(@class,'is-error')]")).isEmpty()) { // captcha
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

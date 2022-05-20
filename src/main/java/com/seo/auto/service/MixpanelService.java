@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class MixpanelService {
 
     private static MixpanelService instance;
+    private static boolean enabled = true;
 
     private final Logger logger = LoggerFactory.getLogger(MixpanelService.class);
     private static final String MIXPANEL_API_KEY = "s98sJuFTg+HFhHUBt+vvGhM/cMhM2hncL2DFN5S7N6tFLyNcfbSEEw==";
@@ -65,6 +66,7 @@ public class MixpanelService {
     }
 
     private void sendEventToMixpanel(JSONObject props, MixpanelTrackEvent trackEvent) {
+        if (!enabled)   return;
         MessageBuilder messageBuilder = new MessageBuilder(UtilsMeth.decrypt(MIXPANEL_API_KEY));
         JSONObject sentEvent = messageBuilder.event(UtilsMeth.getMacAddress(),trackEvent.getDescription(), props);
         MixpanelAPI mixpanel = new MixpanelAPI();
@@ -80,15 +82,18 @@ public class MixpanelService {
         if (messages == null || messages.isEmpty()) {
             return;
         }
-            MixpanelAPI mixpanel = new MixpanelAPI();
-            MessageBuilder messageBuilder = new MessageBuilder(UtilsMeth.decrypt(MIXPANEL_API_KEY));
-            ClientDelivery delivery = new ClientDelivery();
-            for (JSONObject message : messages) {
-                JSONObject sentEvent = messageBuilder.event(clientId,trackEvent.getDescription(), message);
-                delivery.addMessage(sentEvent);
-            }
-            mixpanel.deliver(delivery);
+
+        if (!enabled)   return;
+
+        MixpanelAPI mixpanel = new MixpanelAPI();
+        MessageBuilder messageBuilder = new MessageBuilder(UtilsMeth.decrypt(MIXPANEL_API_KEY));
+        ClientDelivery delivery = new ClientDelivery();
+        for (JSONObject message : messages) {
+            JSONObject sentEvent = messageBuilder.event(clientId,trackEvent.getDescription(), message);
+            delivery.addMessage(sentEvent);
         }
+        mixpanel.deliver(delivery);
+    }
 
     public static MixpanelService getInstance(){
         if (instance == null) {

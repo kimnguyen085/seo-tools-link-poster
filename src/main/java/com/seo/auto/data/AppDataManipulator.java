@@ -27,26 +27,26 @@ public class AppDataManipulator {
     public static void applyActiveProfile() {
         if (activeProfile == null) return;
 
-        BczBot.usrName = activeProfile.getBczCredentials().getUsrName();
-        BczBot.pwd = activeProfile.getBczCredentials().getPwd();
-        ElloCoBot.usrName = activeProfile.getEllocoCredentials().getUsrName();
-        ElloCoBot.pwd = activeProfile.getEllocoCredentials().getPwd();
-        FlipboardBot.usrName = activeProfile.getFlipboardCredentials().getUsrName();
-        FlipboardBot.pwd = activeProfile.getFlipboardCredentials().getPwd();
-        GetPocketBot.usrName = activeProfile.getGetPocketCredentials().getUsrName();
-        GetPocketBot.pwd = activeProfile.getGetPocketCredentials().getPwd();
-        InstapaperBot.usrName = activeProfile.getInstapaperCredentials().getUsrName();
-        InstapaperBot.pwd = activeProfile.getInstapaperCredentials().getPwd();
-        ScoopItBot.usrName = activeProfile.getScoopitCredentials().getUsrName();
-        ScoopItBot.pwd = activeProfile.getScoopitCredentials().getPwd();
-        TumblrBot.usrName = activeProfile.getTumblrCredentials().getUsrName();
-        TumblrBot.pwd = activeProfile.getTumblrCredentials().getPwd();
-        VingleBot.usrName = activeProfile.getVingleCredentials().getUsrName();
-        VingleBot.pwd = activeProfile.getVingleCredentials().getPwd();
-        WordpressBot.usrName = activeProfile.getWpCredentials().getUsrName();
-        WordpressBot.pwd = activeProfile.getWpCredentials().getPwd();
-        FolkdBot.usrName = activeProfile.getFolkdCredentials().getUsrName();
-        FolkdBot.pwd = activeProfile.getFolkdCredentials().getPwd();
+        BczBot.usrName = activeProfile.getBczCredentials() == null ? "" : activeProfile.getBczCredentials().getUsrName();
+        BczBot.pwd = activeProfile.getBczCredentials() == null ? "" : activeProfile.getBczCredentials().getPwd();
+        ElloCoBot.usrName = activeProfile.getEllocoCredentials() == null ? "" : activeProfile.getEllocoCredentials().getUsrName();
+        ElloCoBot.pwd = activeProfile.getEllocoCredentials() == null ? "" : activeProfile.getEllocoCredentials().getPwd();
+        FlipboardBot.usrName = activeProfile.getFlipboardCredentials() == null ? "" : activeProfile.getFlipboardCredentials().getUsrName();
+        FlipboardBot.pwd = activeProfile.getFlipboardCredentials() == null ? "" : activeProfile.getFlipboardCredentials().getPwd();
+        GetPocketBot.usrName = activeProfile.getGetPocketCredentials() == null ? "" : activeProfile.getGetPocketCredentials().getUsrName();
+        GetPocketBot.pwd = activeProfile.getGetPocketCredentials() == null ? "" : activeProfile.getGetPocketCredentials().getPwd();
+        InstapaperBot.usrName = activeProfile.getInstapaperCredentials() == null ? "" : activeProfile.getInstapaperCredentials().getUsrName();
+        InstapaperBot.pwd = activeProfile.getInstapaperCredentials() == null ? "" : activeProfile.getInstapaperCredentials().getPwd();
+        ScoopItBot.usrName = activeProfile.getScoopitCredentials() == null ? "" : activeProfile.getScoopitCredentials().getUsrName();
+        ScoopItBot.pwd = activeProfile.getScoopitCredentials() == null ? "" : activeProfile.getScoopitCredentials().getPwd();
+        TumblrBot.usrName = activeProfile.getTumblrCredentials() == null ? "" : activeProfile.getTumblrCredentials().getUsrName();
+        TumblrBot.pwd = activeProfile.getTumblrCredentials() == null ? "" : activeProfile.getTumblrCredentials().getPwd();
+        VingleBot.usrName = activeProfile.getVingleCredentials() == null ? "" : activeProfile.getVingleCredentials().getUsrName();
+        VingleBot.pwd = activeProfile.getVingleCredentials() == null ? "" : activeProfile.getVingleCredentials().getPwd();
+        WordpressBot.usrName = activeProfile.getWpCredentials() == null ? "" : activeProfile.getWpCredentials().getUsrName();
+        WordpressBot.pwd = activeProfile.getWpCredentials() == null ? "" : activeProfile.getWpCredentials().getPwd();
+        FolkdBot.usrName = activeProfile.getFolkdCredentials() == null ? "" : activeProfile.getFolkdCredentials().getUsrName();
+        FolkdBot.pwd = activeProfile.getFolkdCredentials() == null ? "" : activeProfile.getFolkdCredentials().getPwd();
     }
 
     public static void loadData() {

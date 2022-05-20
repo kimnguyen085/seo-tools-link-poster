@@ -27,6 +27,13 @@ public class BczBot extends BaseBot {
             driver.findElement(By.id("user_pass")).sendKeys(pwd);
             driver.findElement(By.id("wp-submit")).click();
             Thread.sleep(4000l);
+
+            // Check login success
+            String pageSource = driver.getPageSource();
+            if (!Jsoup.parse(pageSource).getElementsByAttributeValue("id", "login_error").isEmpty()) {
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

@@ -25,6 +25,12 @@ public class VingleBot extends BaseBot {
             Thread.sleep(3000l);
             driver.findElement(By.xpath("//button[contains(text(),'Log In')]")).click();
             Thread.sleep(4000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//input[contains(@class,'solidReasonInput__failedInput')]")).isEmpty()) { // captcha
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

@@ -37,6 +37,13 @@ public class FolkdBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.id("submit_login")).click();
             Thread.sleep(4000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//img[contains(@src,'/images/warning.gif')]")).isEmpty()) {
+                LOGGER.info("Login error");
+                return false;
+            }
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

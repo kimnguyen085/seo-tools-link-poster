@@ -26,3 +26,6 @@
 #chromedriver
 /chromedrivers/*
 
+#licenseServer
+/licenseServer/*
+/licenseServer_Gyancy.zip

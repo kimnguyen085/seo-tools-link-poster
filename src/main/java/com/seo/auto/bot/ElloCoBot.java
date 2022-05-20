@@ -3,6 +3,7 @@ package main.java.com.seo.auto.bot;
 import main.java.com.seo.auto.utils.ClipboardUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
@@ -29,6 +30,14 @@ public class ElloCoBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.xpath("//button[contains(@class,'FormButton')]")).click();
             Thread.sleep(2000l);
+
+            // Check login success
+            String pageSource = driver.getPageSource();
+            if (!Jsoup.parse(pageSource).select("p:contains(password are incorrect)").isEmpty() ||
+                    !Jsoup.parse(pageSource).select("p:contains(at least 8 characters)").isEmpty()) {
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

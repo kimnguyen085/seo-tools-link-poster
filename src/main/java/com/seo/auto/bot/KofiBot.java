@@ -27,6 +27,13 @@ public class KofiBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.id("formSubmitButton")).click();
             Thread.sleep(4000l);
+
+            // Check login success
+            // TO BE IMPLEMENTED
+//            if (!driver.findElements(By.xpath("//div[contains(text(),'Sorry, the email and password provided do not match')]")).isEmpty()) { // captcha
+//                LOGGER.info("Login error");
+//                return false;
+//            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;

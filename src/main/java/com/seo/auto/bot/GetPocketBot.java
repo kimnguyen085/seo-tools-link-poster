@@ -25,6 +25,13 @@ public class GetPocketBot extends BaseBot {
             Thread.sleep(2000l);
             driver.findElement(By.xpath("//input[contains(@class,'login-btn-email')]")).click();
             Thread.sleep(7000l);
+
+            // Check login success
+            if (!driver.findElements(By.xpath("//p[contains(@class,'login-error')]")).isEmpty() ||
+                    !driver.findElements(By.xpath("//iframe[contains(@title,'recaptcha')]")).isEmpty()) { // captcha
+                LOGGER.info("Login error");
+                return false;
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return false;
